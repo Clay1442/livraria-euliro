@@ -33,7 +33,7 @@ public class Carrinho implements Serializable {
     private Cliente cliente;
 
     @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true)
-    private HashSet<ItemCarrinho> itens = new HashSet<>();
+    private Set<ItemCarrinho> itens = new HashSet<>();
 
     public Carrinho( ) {
     }

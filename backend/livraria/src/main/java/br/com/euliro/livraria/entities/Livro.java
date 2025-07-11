@@ -40,7 +40,7 @@ public class Livro implements Serializable{
 	@JoinTable(name = "tb_livro_autor",
 	joinColumns = @JoinColumn(name = "livro_id"),
 	inverseJoinColumns = @JoinColumn(name = "autor_id"))
-	private HashSet<Autor> autores = new HashSet<>();
+	private Set<Autor> autores = new HashSet<>();
 	
 	
 	

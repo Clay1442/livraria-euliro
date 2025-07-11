@@ -26,7 +26,7 @@ public class Autor implements Serializable {
     private String sobrenome;
     
     @ManyToMany(mappedBy = "autores")
-    private HashSet<Livro> livros = new HashSet<>();
+    private Set<Livro> livros = new HashSet<>();
 
     public Autor() {
     }

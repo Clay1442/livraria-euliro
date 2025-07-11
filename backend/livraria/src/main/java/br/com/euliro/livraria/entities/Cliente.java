@@ -28,7 +28,7 @@ public class Cliente implements Serializable {
     private LocalDate dataNascimento;
 
     @OneToMany(mappedBy = "cliente")
-    private HashSet<Pedido> pedidos = new HashSet<>();
+    private Set<Pedido> pedidos = new HashSet<>();
     
     
     public Cliente() {

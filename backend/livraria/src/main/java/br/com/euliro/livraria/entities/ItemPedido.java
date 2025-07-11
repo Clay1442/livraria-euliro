@@ -20,9 +20,13 @@ public class ItemPedido implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Livro livro;
 	private BigDecimal precoUnitario;
 	private int quantidade;
+	
+	
+    @ManyToOne
+    @JoinColumn(name = "livro_id")
+	private Livro livro;
 	
 	@ManyToOne
 	@JoinColumn(name = "pedido_id")
@@ -40,6 +44,11 @@ public class ItemPedido implements Serializable {
 		this.quantidade = quantidade;
 	}
 
+
+	public BigDecimal getSubtotal(){
+	 return precoUnitario.multiply(new BigDecimal(quantidade));
+	}
+	
 	public Long getId() {
 		return id;
 	}
