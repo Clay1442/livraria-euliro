@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,29 +15,30 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_autor")
-public class Autor implements Serializable {
+@Table(name = "tb_authors")
+public class Author implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-    private String nome;
+    private String name;
     
-    private String sobrenome;
+    private String lastName;
     
-    @ManyToMany(mappedBy = "autores")
-    private Set<Livro> livros = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books = new HashSet<>();
 
-    public Autor() {
+    public Author() {
     }
     
-	public Autor(Long id, String nome, String sobrenome) {
+	public Author(Long id, String name, String lastName) {
 		super();
 		this.id = id;
-		this.nome = nome;
-		this.sobrenome = sobrenome;
+		this.name = name;
+		this.lastName = lastName;
 	}
 
 	public Long getId() {
@@ -46,29 +49,34 @@ public class Autor implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getSobrenome() {
-		return sobrenome;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	
 	
-	public Set<Livro> getLivros() {
-		return livros;
+	public Set<Book> getBooks() {
+		return books;
 	}
 
 
+	public String fullName(){
+		return getName() + " " + getLastName();
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -82,7 +90,7 @@ public class Autor implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Autor other = (Autor) obj;
+		Author other = (Author) obj;
 		return Objects.equals(id, other.id);
 	}
     

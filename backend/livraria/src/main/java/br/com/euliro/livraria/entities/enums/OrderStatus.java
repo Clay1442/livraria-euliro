@@ -1,9 +1,9 @@
 package br.com.euliro.livraria.entities.enums;
 
-public enum StatusPedidos {
+public enum OrderStatus {
 	 
 	 AGUARDANDO_PAGAMENTO(1),
-	 PAGO(2),  
+	 PAGAMENTO_APROVADO(2),  
      ENVIADO(3),
      ENTREGUE(4),
 	 CANCELADO(5);
@@ -11,7 +11,7 @@ public enum StatusPedidos {
 		private int codigo;
 		
 		
-		private StatusPedidos(int codigo) {
+		private OrderStatus(int codigo) {
 			this.codigo = codigo;
 		}
 		
@@ -19,8 +19,8 @@ public enum StatusPedidos {
 			return codigo;
 		}
 		
-		public static StatusPedidos valueOf(int codigo) {
-			for(StatusPedidos value : StatusPedidos.values()) {
+		public static OrderStatus valueOf(int codigo) {
+			for(OrderStatus value : OrderStatus.values()) {
 				if(value.getCodigo() == codigo) {
 					return value; 
 				}
