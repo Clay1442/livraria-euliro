@@ -2,11 +2,16 @@ package br.com.euliro.livraria.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.euliro.livraria.dto.PasswordUpdateDTO;
+import br.com.euliro.livraria.dto.UserCreateDTO;
+import br.com.euliro.livraria.dto.UserDTO;
+import br.com.euliro.livraria.dto.UserUpdateDTO;
 import br.com.euliro.livraria.entities.User;
 import br.com.euliro.livraria.repositories.UserRepository;
 
@@ -15,19 +20,32 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repository;
-
-	public List<User> findAll() {
-		return repository.findAll();
+	
+	// metodo privado auxiliar que retorna um order
+	private User findEntityById(Long id) {
+		Optional<User> userOptional = repository.findById(id);
+		return userOptional.orElseThrow(() -> new RuntimeException("Pedido não encontrado! Id: " + id));
+	}
+	
+	
+	public List<UserDTO> findAll() {
+		List<User> userList = repository.findAll();
+		return userList.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
 	}
 
-	public User findById(Long id) {
-		Optional<User> userOptional = repository.findById(id);
-		return userOptional.orElseThrow(() -> new RuntimeException("Usuário não encontrado! Id: " + id));
+	public UserDTO findById(Long id) {
+		User userOptional = findEntityById(id);
+		return new UserDTO(userOptional);
 	}
 
 	@Transactional
-	public User insert(User obj) {
-		return repository.save(obj);
+	public User insert(UserCreateDTO dto) {
+		User entity = new User();
+		entity.setName(dto.getName());
+		entity.setEmail(dto.getEmail());
+		entity.setBirthDate(dto.getBirthDate());
+		entity.setPassword(dto.getPassword());
+		return repository.save(entity);
 	}
 
 	public void delete(Long id) {
@@ -36,27 +54,27 @@ public class UserService {
 	}
 
 	@Transactional
-	public User update(Long id, User newData) {
-		User entity = findById(id);
-		updateData(entity, newData);
-		return repository.save(entity);
+	public UserUpdateDTO update(Long id, UserUpdateDTO dto) {
+		User entity = findEntityById(id);
+		updateData(entity, dto);
+		repository.save(entity);		
+		return new UserUpdateDTO(entity); 
 	}
 
-	private void updateData(User entity, User newData) {
-		entity.setName(newData.getName());
-		entity.setEmail(newData.getEmail());
-		entity.setBirthDate(newData.getBirthDate());
+	private void updateData(User entity, UserUpdateDTO dto) {
+		entity.setName(dto.getName());
+		entity.setEmail(dto.getEmail());
+		entity.setBirthDate(dto.getBirthDate());
 	}
 
 	@Transactional
-	public void updatePassword(Long id, String oldPassword, String newPassword) {
-		User user = findById(id);
+	public void updatePassword(Long id, PasswordUpdateDTO dto) {
+		User user = findEntityById(id);
 
-		if (!user.getPassword().equals(oldPassword)) {
+		if (!user.getPassword().equals(dto.getOldPassword())) {
 			throw new RuntimeException("A senha antiga não confere!");
 		}
-
-		user.setPassword(newPassword);
+		user.setPassword(dto.getNewPassword());
 		repository.save(user);
 	}
 }
