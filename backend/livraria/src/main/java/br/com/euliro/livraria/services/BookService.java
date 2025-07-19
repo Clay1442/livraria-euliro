@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.euliro.livraria.dto.BookCreateDTO;
+import br.com.euliro.livraria.entities.Author;
 import br.com.euliro.livraria.entities.Book;
+import br.com.euliro.livraria.repositories.AuthorRepository;
 import br.com.euliro.livraria.repositories.BookRepository;
 
 @Service
@@ -17,6 +20,8 @@ public class BookService {
 	@Autowired
 	private BookRepository repository;
 
+	@Autowired
+	private AuthorRepository authorRepository;
 
 	public List<Book> findAll() {
 		return repository.findAll();
@@ -28,8 +33,21 @@ public class BookService {
 	}
 
 	@Transactional
-	public Book insert(Book obj) {
-		return repository.save(obj);
+	public Book create(BookCreateDTO dto) {
+		Book newBook = new Book();
+		newBook.setTitle(dto.getTitle());
+		newBook.setDescription(dto.getDescription());
+		newBook.setPrice(dto.getPrice());
+		newBook.addToStock(dto.getStock());
+		
+		for (Long authorId : dto.getAuthorIds()) {
+			Author author = authorRepository.findById(authorId)
+			.orElseThrow(() -> new RuntimeException("Autor não encontrado: " + authorId));
+			newBook.addAuthor(author);
+		}
+
+		return repository.save(newBook);
+
 	}
 
 	public void delete(Long id) {
@@ -53,6 +71,13 @@ public class BookService {
 	public Book addStock(Long id, int quantity) {
 		Book book = findById(id);
 		book.addToStock(quantity);
+		return repository.save(book);
+	}
+	
+	@Transactional
+	public Book removeStock(Long id, int quantity) {
+		Book book = findById(id);
+		book.removeFromStock(quantity);
 		return repository.save(book);
 	}
 

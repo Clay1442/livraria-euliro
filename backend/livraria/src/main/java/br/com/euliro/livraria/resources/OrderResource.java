@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.euliro.livraria.dto.OrderDTO;
 import br.com.euliro.livraria.entities.Cart;
-import br.com.euliro.livraria.entities.Order;
 import br.com.euliro.livraria.services.CartService;
 import br.com.euliro.livraria.services.OrderService;
 
@@ -28,27 +28,27 @@ public class OrderResource {
 	private CartService carrinhoService;
 	
 	@GetMapping
-	public ResponseEntity<List<Order>> findAll() {
-		List<Order> list = service.findAll();																	
+	public ResponseEntity<List<OrderDTO>> findAll() {
+		List<OrderDTO> list = service.findAll();																	
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Order> findById(@PathVariable Long id) {
-		Order obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
+		OrderDTO dto = service.findById(id);
+		return ResponseEntity.ok().body(dto);
 	}
 
 
     @PostMapping(value = "cart/user/{userId}")
-	public ResponseEntity<Order> insert(@PathVariable Long userId) {
+	public ResponseEntity<OrderDTO> insert(@PathVariable Long userId) {
 	    Cart cart = carrinhoService.getUserCart(userId);
 	    
 	    if(cart.getItems().isEmpty()) {
             throw new RuntimeException("Não é possível criar um pedido a partir de um carrinho vazio.");
 	    }
 
-	    Order newOrder = service.createFromCart(cart);
+	    OrderDTO newOrder = service.createFromCart(cart);
 	    
 	    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 	        .buildAndExpand(newOrder.getId()).toUri();

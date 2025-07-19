@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.euliro.livraria.dto.BookCreateDTO;
 import br.com.euliro.livraria.entities.Book;
 import br.com.euliro.livraria.services.BookService;
 
@@ -41,10 +42,10 @@ public class BookResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Book> insert(@RequestBody Book obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<Book> create(@RequestBody BookCreateDTO dto) {
+        Book newBook = service.create(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newBook.getId()).toUri();
+		return ResponseEntity.created(uri).body(newBook);
 
 	}
 
@@ -62,13 +63,20 @@ public class BookResource {
 	}
 
 	@PatchMapping(value = "/{id}/stock")
-	public ResponseEntity<Book> addStock(@PathVariable Long id, Map<String, Integer> body) {
+	public ResponseEntity<Book> addStock(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
 		int quantity = body.get("quantity");
 		Book obj = service.addStock(id, quantity);
 		return ResponseEntity.ok().body(obj);
 
 	}
-
+	
+	@PatchMapping(value = "/{id}/stock/remove")
+	public ResponseEntity<Book> removeStock(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
+		int quantity = body.get("quantity");
+		Book obj = service.removeStock(id, quantity);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	@PatchMapping(value = "/{id}/price")
 	public ResponseEntity<Book> updatePrice(@PathVariable Long id, @RequestBody Map<String, BigDecimal> body) {
 		BigDecimal newPrice = body.get("price");
