@@ -38,9 +38,7 @@ public class BookService {
 	}
 
 	public BookDTO findById(Long id) {
-		Book optionalBook = repository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Livro não Encontrado! Id: " + id));
-
+		Book optionalBook = findEntityById(id);
 		return new BookDTO(optionalBook);
 	}
 
