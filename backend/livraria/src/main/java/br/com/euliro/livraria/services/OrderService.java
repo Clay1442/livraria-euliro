@@ -28,12 +28,13 @@ public class OrderService {
 	@Autowired
 	private CartService cartService;
 
-	// metodo privado auxiliar que retorna um order
+	// metodo privado auxiliar que retorna uma entidade
 	private Order findEntityById(Long id) {
 		Optional<Order> orderOptional = repository.findById(id);
 		return orderOptional.orElseThrow(() -> new RuntimeException("Pedido não encontrado! Id: " + id));
 	}
 
+    @Transactional(readOnly = true)
 	public List<OrderDTO> findAll() {
 		List<Order> orders = repository.findAll();
 		List<OrderDTO> ordersDtos = new ArrayList<>();
@@ -44,6 +45,7 @@ public class OrderService {
 		return ordersDtos;
 	}
 
+    @Transactional(readOnly = true)
 	public OrderDTO findById(Long id) {
 		Order orderOptional = findEntityById(id);
 		return new OrderDTO(orderOptional);
@@ -54,7 +56,7 @@ public class OrderService {
 		Order newOrder = new Order(null, cart.getClient(), Instant.now(), OrderStatus.AGUARDANDO_PAGAMENTO);
 
 		for (CartItem cartItem : cart.getItems()) {
-			OrderItem orderItem = new OrderItem(null, newOrder, cartItem.getBook(), cartItem.getAmount(),
+			OrderItem orderItem = new OrderItem(null, newOrder, cartItem.getBook(), cartItem.getQuantity(),
 					cartItem.getUnitPrice());
 			newOrder.addItem(orderItem);
 		}

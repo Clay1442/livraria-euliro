@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.euliro.livraria.dto.AddItemRequestDTO;
-import br.com.euliro.livraria.entities.Cart;
+import br.com.euliro.livraria.dto.CartDTO;
 import br.com.euliro.livraria.services.CartService;
 
 @RestController
@@ -22,36 +22,34 @@ public class CartResource {
 
 	@Autowired
 	private CartService service;
-     
-	
+
 	@GetMapping
-	public ResponseEntity<List<Cart>> findAll() {
-		List<Cart> list = service.findAll();																	
+	public ResponseEntity<List<CartDTO>> findAll() {
+		List<CartDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/users/{userId}")
-	public ResponseEntity<Cart> getUserCart(@PathVariable Long userId) {
-		Cart obj = service.getUserCart(userId);
+	public ResponseEntity<CartDTO> getUserCart(@PathVariable Long userId) {
+		CartDTO obj = service.getUserCartDTO(userId);
 		return ResponseEntity.ok().body(obj);
 	}
 
-
-    @PostMapping(value = "{userId}/items")
-	public ResponseEntity<Cart> addItem(@PathVariable Long userId, @RequestBody AddItemRequestDTO dto) {
-	   Cart cart = service.addItem(userId, dto.getBookId(), dto.getQuantity());
-	   return ResponseEntity.ok().body(cart);
+	@PostMapping(value = "{userId}/items")
+	public ResponseEntity<CartDTO> addItem(@PathVariable Long userId, @RequestBody AddItemRequestDTO dto) {
+		CartDTO cart = service.addItem(userId, dto.getBookId(), dto.getQuantity());
+		return ResponseEntity.ok().body(cart);
 	}
-        
-    @DeleteMapping(value = "{userId}/items/{itemId}")
-  	public ResponseEntity<Cart> removeItem(@PathVariable Long userId, @PathVariable  Long itemId) {
-  	   Cart cart = service.removeItem(userId, itemId);
-  	   return ResponseEntity.ok().body(cart);
-  	}
-      
-    @DeleteMapping(value = "/carts/{cartId}/items")
-  	public ResponseEntity<Void> clearCart(@PathVariable Long cartId) {
-  	   service.clearCart(cartId);
-	   return ResponseEntity.noContent().build();
-  	}
+
+	@DeleteMapping(value = "{userId}/items/{itemId}")
+	public ResponseEntity<CartDTO> removeItem(@PathVariable Long userId, @PathVariable Long itemId) {
+		CartDTO cart = service.removeItem(userId, itemId);
+		return ResponseEntity.ok().body(cart);
+	}
+
+	@DeleteMapping(value = "/carts/{cartId}/items")
+	public ResponseEntity<Void> clearCart(@PathVariable Long cartId) {
+		service.clearCart(cartId);
+		return ResponseEntity.noContent().build();
+	}
 }

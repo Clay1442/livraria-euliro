@@ -26,17 +26,19 @@ public class BookService {
 	@Autowired
 	private AuthorRepository authorRepository;
 
-	// metodo privado auxiliar que retorna um order
+	// metodo privado auxiliar que retorna uma entidade
 	private Book findEntityById(Long id) {
 		Optional<Book> bookOptional = repository.findById(id);
 		return bookOptional.orElseThrow(() -> new RuntimeException("Livro não encontrado! Id: " + id));
 	}
 
+    @Transactional(readOnly = true)
 	public List<BookDTO> findAll() {
 		List<Book> list = repository.findAll();
 		return list.stream().map(book -> new BookDTO(book)).collect(Collectors.toList());
 	}
-
+    
+    @Transactional(readOnly = true)
 	public BookDTO findById(Long id) {
 		Book optionalBook = findEntityById(id);
 		return new BookDTO(optionalBook);

@@ -42,7 +42,7 @@ public class OrderResource {
 
     @PostMapping(value = "cart/user/{userId}")
 	public ResponseEntity<OrderDTO> insert(@PathVariable Long userId) {
-	    Cart cart = carrinhoService.getUserCart(userId);
+	    Cart cart = carrinhoService.findCartEntityByUserId(userId);
 	    
 	    if(cart.getItems().isEmpty()) {
             throw new RuntimeException("Não é possível criar um pedido a partir de um carrinho vazio.");

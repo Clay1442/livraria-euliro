@@ -21,18 +21,19 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
-	// metodo privado auxiliar que retorna um order
+	// metodo privado auxiliar que retorna uma entidade
 	private User findEntityById(Long id) {
 		Optional<User> userOptional = repository.findById(id);
 		return userOptional.orElseThrow(() -> new RuntimeException("Pedido não encontrado! Id: " + id));
 	}
 	
-	
+    @Transactional(readOnly = true)
 	public List<UserDTO> findAll() {
 		List<User> userList = repository.findAll();
 		return userList.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
 	}
 
+    @Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
 		User userOptional = findEntityById(id);
 		return new UserDTO(userOptional);

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.euliro.livraria.dto.AuthorCreateDTO;
 import br.com.euliro.livraria.dto.AuthorDTO;
@@ -19,16 +20,19 @@ public class AuthorService {
     @Autowired 	
 	private AuthorRepository repository;
 
+    // metodo privado auxiliar que retorna uma entidade
     private Author findEntityById(Long id) {
 		Optional<Author> bookOptional = repository.findById(id);
 		return bookOptional.orElseThrow(() -> new RuntimeException("Author não encontrado! Id: " + id));
 	}
     
+    @Transactional(readOnly = true)
 	public Set<AuthorDTO> findAll(){
 		List<Author> list = repository.findAll();
 		return list.stream().map(author -> new AuthorDTO(author)).collect(Collectors.toSet());
 	}
-	
+    
+    @Transactional(readOnly = true)
 	public AuthorDTO findById(Long id){
 		Author authorOptional = findEntityById(id);
 	    return new AuthorDTO(authorOptional);

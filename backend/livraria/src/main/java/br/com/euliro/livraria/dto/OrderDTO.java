@@ -2,7 +2,7 @@ package br.com.euliro.livraria.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.euliro.livraria.entities.Order;
@@ -16,7 +16,7 @@ public class OrderDTO {
     private OrderStatus orderStatus;
     private String trackingCode;
     private BigDecimal totalPrice;
-    private List<OrderItemDTO> items; 
+    private Set<OrderItemDTO> items; 
     
 	public OrderDTO(){		
 	}
@@ -28,7 +28,7 @@ public class OrderDTO {
 		this.orderStatus = entity.getOrderStatus();
 		this.trackingCode = entity.getTrackingCode();
 		this.totalPrice = entity.getTotalPrice();
-        this.items = entity.getItems().stream().map(item -> new OrderItemDTO(item)).collect(Collectors.toList());
+        this.items = entity.getItems().stream().map(item -> new OrderItemDTO(item)).collect(Collectors.toSet());
 	}
 
 	public Long getId() {
@@ -71,11 +71,11 @@ public class OrderDTO {
 		this.totalPrice = totalPrice;
 	}
 
-	public List<OrderItemDTO> getItems() {
+	public Set<OrderItemDTO> getItems() {
 		return items;
 	}
 
-	public void setItems(List<OrderItemDTO> items) {
+	public void setItems(Set<OrderItemDTO> items) {
 		this.items = items;
 	}
 	

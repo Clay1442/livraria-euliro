@@ -27,7 +27,7 @@ public class Cart implements Serializable {
     private Long id;
  
     private LocalDate creationDate;
-    private LocalDate lastDateCreation;
+    private LocalDate lastModifiedDate;
     
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -40,11 +40,11 @@ public class Cart implements Serializable {
     public Cart( ) {
     }
 
-	public Cart(Long id, LocalDate creationDate, LocalDate lastDateCreation, User client) {
+	public Cart(Long id, LocalDate creationDate, LocalDate lastModifiedDate, User client) {
 		super();
 		this.id = id;
 		this.creationDate = creationDate;
-		this.lastDateCreation = lastDateCreation;
+		this.lastModifiedDate = lastModifiedDate;
 		this.client = client;
 	}
 
@@ -64,12 +64,12 @@ public class Cart implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public LocalDate getlastDateCreation() {
-		return lastDateCreation;
+	public LocalDate getLastModifiedDate() {
+		return lastModifiedDate;
 	}
 
-	public void setDataUltimaCriacao(LocalDate lastDateCreation) {
-		this.lastDateCreation = lastDateCreation;
+	public void setLastModifiedDate(LocalDate lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
 	}
 	public User getClient() {
 		return client;
