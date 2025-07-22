@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.euliro.livraria.dto.AuthorCreateDTO;
 import br.com.euliro.livraria.dto.AuthorDTO;
 import br.com.euliro.livraria.entities.Author;
+import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
 import br.com.euliro.livraria.repositories.AuthorRepository;
 
 @Service
@@ -23,7 +24,7 @@ public class AuthorService {
     // metodo privado auxiliar que retorna uma entidade
     private Author findEntityById(Long id) {
 		Optional<Author> bookOptional = repository.findById(id);
-		return bookOptional.orElseThrow(() -> new RuntimeException("Author não encontrado! Id: " + id));
+		return bookOptional.orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado! Id: " + id));
 	}
     
     @Transactional(readOnly = true)

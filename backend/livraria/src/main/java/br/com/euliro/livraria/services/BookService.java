@@ -14,6 +14,7 @@ import br.com.euliro.livraria.dto.BookDTO;
 import br.com.euliro.livraria.dto.BookUpdateDTO;
 import br.com.euliro.livraria.entities.Author;
 import br.com.euliro.livraria.entities.Book;
+import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
 import br.com.euliro.livraria.repositories.AuthorRepository;
 import br.com.euliro.livraria.repositories.BookRepository;
 
@@ -29,23 +30,23 @@ public class BookService {
 	// metodo privado auxiliar que retorna uma entidade
 	private Book findEntityById(Long id) {
 		Optional<Book> bookOptional = repository.findById(id);
-		return bookOptional.orElseThrow(() -> new RuntimeException("Livro não encontrado! Id: " + id));
+		return bookOptional.orElseThrow(() -> new ResourceNotFoundException("Book não encontrado! Id: " + id));
 	}
 
-    @Transactional(readOnly = true)
+	@Transactional(readOnly = true)
 	public List<BookDTO> findAll() {
 		List<Book> list = repository.findAll();
 		return list.stream().map(book -> new BookDTO(book)).collect(Collectors.toList());
 	}
-    
-    @Transactional(readOnly = true)
+
+	@Transactional(readOnly = true)
 	public BookDTO findById(Long id) {
 		Book optionalBook = findEntityById(id);
 		return new BookDTO(optionalBook);
 	}
 
 	@Transactional
-	public Book create(BookCreateDTO dto) {
+	public BookDTO create(BookCreateDTO dto) {
 		Book newBook = new Book();
 		newBook.setTitle(dto.getTitle());
 		newBook.setDescription(dto.getDescription());
@@ -60,7 +61,7 @@ public class BookService {
 
 		Book savedBook = repository.save(newBook);
 
-		return repository.save(savedBook);
+		return new BookDTO(savedBook);
 	}
 
 	public void delete(Long id) {

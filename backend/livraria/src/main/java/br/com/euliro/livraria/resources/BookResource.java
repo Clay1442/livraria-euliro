@@ -21,7 +21,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.euliro.livraria.dto.BookCreateDTO;
 import br.com.euliro.livraria.dto.BookDTO;
 import br.com.euliro.livraria.dto.BookUpdateDTO;
-import br.com.euliro.livraria.entities.Book;
 import br.com.euliro.livraria.services.BookService;
 
 @RestController
@@ -45,10 +44,9 @@ public class BookResource {
 
 	@PostMapping
 	public ResponseEntity<BookDTO> create(@RequestBody BookCreateDTO dto) {
-		Book newBook = service.create(dto);
+		BookDTO newBook = service.create(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newBook.getId()).toUri();
-		BookDTO responseDto = new BookDTO(newBook);
-		return ResponseEntity.created(uri).body(responseDto);
+		return ResponseEntity.created(uri).body(newBook);
 
 	}
 
