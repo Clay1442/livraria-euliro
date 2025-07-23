@@ -1,6 +1,6 @@
 package br.com.euliro.livraria.services;
 
-import java.util.List;
+	import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -13,9 +13,10 @@ import br.com.euliro.livraria.entities.CartItem;
 import br.com.euliro.livraria.dto.CartDTO;
 import br.com.euliro.livraria.entities.Book;
 import br.com.euliro.livraria.entities.User;
+import br.com.euliro.livraria.exceptions.InsufficientStockException;
+import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
 import br.com.euliro.livraria.repositories.CartRepository;
 import br.com.euliro.livraria.repositories.CartItemRepository;
-import br.com.euliro.livraria.repositories.BookRepository;
 import br.com.euliro.livraria.repositories.UserRepository;
 
 @Service
@@ -28,14 +29,15 @@ public class CartService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private BookRepository bookRepository;
+	private BookService bookService;
 
 	@Autowired
 	private CartItemRepository cartItemRepository;
 
-	// metodo privado auxiliar que retorna uma entidade
+	// metodo auxiliar que retorna uma entidade
 	public Cart findCartEntityByUserId(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não Encontrado!"));
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("Usúario não Encontrado"));
 
 		Optional<Cart> cartOptional = cartRepository.findByClient(user);
 
@@ -46,46 +48,44 @@ public class CartService {
 			return cartRepository.save(newCartEntity);
 		});
 	}
-    
+
+	@Transactional(readOnly = true)
+	public CartDTO getUserCartDTO(Long userId) {
+		Cart entity = findCartEntityByUserId(userId);
+		return new CartDTO(entity);
+	}
+
 	@Transactional(readOnly = true)
 	public List<CartDTO> findAll() {
 		List<Cart> cartList = cartRepository.findAll();
 		return cartList.stream().map(cart -> new CartDTO(cart)).collect(Collectors.toList());
 	}
 
-	
-    @Transactional(readOnly = true)
-    public CartDTO getUserCartDTO(Long userId) {
-        Cart entity = findCartEntityByUserId(userId); 
-        return new CartDTO(entity);
-    }
-
 	@Transactional
-	public CartDTO addItem(Long userId, Long bookId, int quantity) {
+	public CartDTO addItem(Long userId, Long bookId, Integer quantity) {
 		Cart cart = findCartEntityByUserId(userId);
-		Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Livro não Encontrado!"));
+		Book book = bookService.findEntityById(bookId);
 
 		Optional<CartItem> existingItemOpt = cart.getItems().stream().filter(item -> item.getBook().equals(book))
 				.findFirst();
 
 		if (existingItemOpt.isPresent()) {
 			CartItem item = existingItemOpt.get();
-			int newQuantity = item.getQuantity() + quantity;
+			Integer newQuantity = item.getQuantity() + quantity;
 
 			if (newQuantity > book.getStock()) {
-				throw new RuntimeException("Estoque insuficiente!");
+				throw new InsufficientStockException("Estoque insuficiente para o livro '" + book.getTitle() + "'. "
+						+ "Disponível: " + book.getStock() + ", Solicitado: " + newQuantity);
 			}
 			item.setQuantity(newQuantity);
 
 		} else {
 			if (quantity > book.getStock()) {
-				throw new RuntimeException("Estoque Insuficiente!");
+				throw new InsufficientStockException("Estoque insuficiente para o livro '" + book.getTitle() + "'. "
+						+ "Disponível: " + book.getStock() + ", Solicitado: " + quantity);
 			}
-			CartItem newItem = new CartItem();
-			newItem.setCart(cart);
-			newItem.setBook(book);
-			newItem.setQuantity(quantity);
-			newItem.setUnitPrice(book.getPrice());
+
+			CartItem newItem = new CartItem(null, quantity, book.getPrice(), cart, book);
 			cart.addItem(newItem);
 		}
 		Cart savedCart = cartRepository.save(cart);
@@ -98,7 +98,7 @@ public class CartService {
 		Cart cart = findCartEntityByUserId(userId);
 
 		CartItem itemToRemove = cartItemRepository.findById(cartItemId)
-				.orElseThrow(() -> new RuntimeException("Item do carrinho não encontrado!"));
+				.orElseThrow(() -> new ResourceNotFoundException("Item do carrinho não encontrado!"));
 
 		if (!itemToRemove.getCart().getClient().equals(cart.getClient())) {
 			throw new SecurityException(
@@ -113,7 +113,8 @@ public class CartService {
 
 	@Transactional
 	public void clearCart(Long cartId) {
-		Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Carrinho não Encontrado!"));
+		Cart cart = cartRepository.findById(cartId)
+				.orElseThrow(() -> new ResourceNotFoundException("Carrinho não Encontrado!"));
 
 		cart.getItems().clear();
 

@@ -22,7 +22,7 @@ public class AuthorService {
 	private AuthorRepository repository;
 
     // metodo privado auxiliar que retorna uma entidade
-    private Author findEntityById(Long id) {
+    public Author findEntityById(Long id) {
 		Optional<Author> bookOptional = repository.findById(id);
 		return bookOptional.orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado! Id: " + id));
 	}

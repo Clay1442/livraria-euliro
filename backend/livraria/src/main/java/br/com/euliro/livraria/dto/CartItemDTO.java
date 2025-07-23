@@ -10,7 +10,7 @@ public class CartItemDTO {
 	private Long id;
 	private BookDTO book;
 	private BigDecimal unitPrice;
-	private int quantity;
+	private Integer quantity;
 
 	public CartItemDTO() {
 	}
@@ -46,11 +46,11 @@ public class CartItemDTO {
 		this.unitPrice = unitPrice;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setAmount(int quantity) {
+	public void setAmount(Integer quantity) {
 		this.quantity = quantity;
 	}
 

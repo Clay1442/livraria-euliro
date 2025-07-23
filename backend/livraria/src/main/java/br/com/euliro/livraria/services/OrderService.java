@@ -17,6 +17,7 @@ import br.com.euliro.livraria.dto.OrderDTO;
 import br.com.euliro.livraria.entities.Book;
 import br.com.euliro.livraria.entities.Order;
 import br.com.euliro.livraria.entities.enums.OrderStatus;
+import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
 import br.com.euliro.livraria.repositories.OrderRepository;
 
 @Service
@@ -31,7 +32,7 @@ public class OrderService {
 	// metodo privado auxiliar que retorna uma entidade
 	private Order findEntityById(Long id) {
 		Optional<Order> orderOptional = repository.findById(id);
-		return orderOptional.orElseThrow(() -> new RuntimeException("Pedido não encontrado! Id: " + id));
+		return orderOptional.orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado! Id: " + id));
 	}
 
     @Transactional(readOnly = true)

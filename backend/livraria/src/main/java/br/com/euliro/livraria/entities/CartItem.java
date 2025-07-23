@@ -22,7 +22,7 @@ public class CartItem implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private int quantity;
+	private Integer quantity = 0;
 	private BigDecimal unitPrice;
 
 	@ManyToOne	
@@ -37,7 +37,7 @@ public class CartItem implements Serializable{
     public CartItem() {
     }
 
-	public CartItem(Long id, int quantity, BigDecimal unitPrice, Cart cart, Book book) {
+	public CartItem(Long id, Integer quantity, BigDecimal unitPrice, Cart cart, Book book) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
@@ -59,11 +59,11 @@ public class CartItem implements Serializable{
 		this.id = id;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import br.com.euliro.livraria.dto.UserCreateDTO;
 import br.com.euliro.livraria.dto.UserDTO;
 import br.com.euliro.livraria.dto.UserUpdateDTO;
 import br.com.euliro.livraria.entities.User;
+import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
 import br.com.euliro.livraria.repositories.UserRepository;
 
 @Service
@@ -20,46 +22,56 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repository;
-	
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	// metodo privado auxiliar que retorna uma entidade
 	private User findEntityById(Long id) {
 		Optional<User> userOptional = repository.findById(id);
-		return userOptional.orElseThrow(() -> new RuntimeException("Pedido não encontrado! Id: " + id));
+		return userOptional.orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado! Id: " + id));
 	}
-	
-    @Transactional(readOnly = true)
+
+	@Transactional(readOnly = true)
 	public List<UserDTO> findAll() {
 		List<User> userList = repository.findAll();
 		return userList.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
 	}
 
-    @Transactional(readOnly = true)
+	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
 		User userOptional = findEntityById(id);
 		return new UserDTO(userOptional);
 	}
 
 	@Transactional
-	public User insert(UserCreateDTO dto) {
+	public User create(UserCreateDTO dto) {
 		User entity = new User();
 		entity.setName(dto.getName());
 		entity.setEmail(dto.getEmail());
 		entity.setBirthDate(dto.getBirthDate());
-		entity.setPassword(dto.getPassword());
+
+		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+
 		return repository.save(entity);
 	}
 
 	public void delete(Long id) {
-		findById(id);
+
+		if (!repository.existsById(id)) {
+			throw new ResourceNotFoundException("Recurso não encontrado para o ID: " + id);
+		}
+
 		repository.deleteById(id);
+
 	}
 
 	@Transactional
 	public UserUpdateDTO update(Long id, UserUpdateDTO dto) {
 		User entity = findEntityById(id);
 		updateData(entity, dto);
-		repository.save(entity);		
-		return new UserUpdateDTO(entity); 
+		repository.save(entity);
+		return new UserUpdateDTO(entity);
 	}
 
 	private void updateData(User entity, UserUpdateDTO dto) {
@@ -70,12 +82,14 @@ public class UserService {
 
 	@Transactional
 	public void updatePassword(Long id, PasswordUpdateDTO dto) {
+
 		User user = findEntityById(id);
 
-		if (!user.getPassword().equals(dto.getOldPassword())) {
+		if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
 			throw new RuntimeException("A senha antiga não confere!");
 		}
-		user.setPassword(dto.getNewPassword());
+
+		user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
 		repository.save(user);
 	}
 }

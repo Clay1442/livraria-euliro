@@ -2,6 +2,7 @@ package br.com.euliro.livraria.dto;
 
 import java.time.LocalDate;
 
+import br.com.euliro.livraria.entities.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -18,9 +19,21 @@ public class UserCreateDTO {
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String password;
     
+    @NotBlank
     private LocalDate birthDate;
 
     
+    
+    
+    
+	public UserCreateDTO(User entity) {
+		super();
+		this.name = entity.getName();
+		this.email = entity.getEmail();
+		this.password = entity.getPassword();
+		this.birthDate = entity.getBirthDate();
+	}
+
 	public String getName() {
 		return name;
 	}

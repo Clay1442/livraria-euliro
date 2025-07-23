@@ -15,7 +15,6 @@ import br.com.euliro.livraria.dto.BookUpdateDTO;
 import br.com.euliro.livraria.entities.Author;
 import br.com.euliro.livraria.entities.Book;
 import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
-import br.com.euliro.livraria.repositories.AuthorRepository;
 import br.com.euliro.livraria.repositories.BookRepository;
 
 @Service
@@ -25,10 +24,10 @@ public class BookService {
 	private BookRepository repository;
 
 	@Autowired
-	private AuthorRepository authorRepository;
+	private AuthorService authorService;
 
-	// metodo privado auxiliar que retorna uma entidade
-	private Book findEntityById(Long id) {
+	// método auxiliar que retorna uma entidade
+	public Book findEntityById(Long id) {
 		Optional<Book> bookOptional = repository.findById(id);
 		return bookOptional.orElseThrow(() -> new ResourceNotFoundException("Book não encontrado! Id: " + id));
 	}
@@ -54,8 +53,7 @@ public class BookService {
 		newBook.addToStock(dto.getStock());
 
 		for (Long authorId : dto.getAuthorIds()) {
-			Author author = authorRepository.findById(authorId)
-					.orElseThrow(() -> new RuntimeException("Autor não encontrado: " + authorId));
+			Author author = authorService.findEntityById(authorId);
 			newBook.addAuthor(author);
 		}
 
@@ -83,7 +81,7 @@ public class BookService {
 	}
 
 	@Transactional
-	public BookDTO addStock(Long id, int quantity) {
+	public BookDTO addStock(Long id, Integer quantity) {
 		Book book = findEntityById(id);
 		book.addToStock(quantity);
 		Book savedBook = repository.save(book);
@@ -91,8 +89,13 @@ public class BookService {
 	}
 
 	@Transactional
-	public BookDTO removeStock(Long id, int quantity) {
+	public BookDTO removeStock(Long id, Integer quantity) {
 		Book book = findEntityById(id);
+		if (book.getStock() < quantity) {
+			throw new IllegalArgumentException("Tentativa de remover " + quantity + " unidades do livro '"
+					+ book.getTitle() + "', mas apenas " + book.getStock() + " estão disponíveis. "
+					+ "A verificação de negócio deveria ter impedido isso.");
+		}
 		book.removeFromStock(quantity);
 		Book savedBook = repository.save(book);
 		return new BookDTO(savedBook);

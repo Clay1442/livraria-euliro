@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.euliro.livraria.dto.AddItemRequestDTO;
 import br.com.euliro.livraria.dto.CartDTO;
 import br.com.euliro.livraria.services.CartService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/carts")
@@ -36,7 +37,7 @@ public class CartResource {
 	}
 
 	@PostMapping(value = "{userId}/items")
-	public ResponseEntity<CartDTO> addItem(@PathVariable Long userId, @RequestBody AddItemRequestDTO dto) {
+	public ResponseEntity<CartDTO> addItem(@PathVariable Long userId,@Valid @RequestBody AddItemRequestDTO dto) {
 		CartDTO cart = service.addItem(userId, dto.getBookId(), dto.getQuantity());
 		return ResponseEntity.ok().body(cart);
 	}

@@ -20,6 +20,7 @@ import br.com.euliro.livraria.dto.UserDTO;
 import br.com.euliro.livraria.dto.UserUpdateDTO;
 import br.com.euliro.livraria.entities.User;
 import br.com.euliro.livraria.services.UserService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -41,9 +42,9 @@ public class UserResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> insert(@RequestBody UserCreateDTO obj) {
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO obj) {
 
-		User newUserEntity  = service.insert(obj);
+		User newUserEntity  = service.create(obj);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUserEntity.getId()).toUri();
 

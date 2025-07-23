@@ -22,6 +22,7 @@ import br.com.euliro.livraria.dto.BookCreateDTO;
 import br.com.euliro.livraria.dto.BookDTO;
 import br.com.euliro.livraria.dto.BookUpdateDTO;
 import br.com.euliro.livraria.services.BookService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/books")
@@ -43,7 +44,7 @@ public class BookResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<BookDTO> create(@RequestBody BookCreateDTO dto) {
+	public ResponseEntity<BookDTO> create(@Valid @RequestBody BookCreateDTO dto) {
 		BookDTO newBook = service.create(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newBook.getId()).toUri();
 		return ResponseEntity.created(uri).body(newBook);

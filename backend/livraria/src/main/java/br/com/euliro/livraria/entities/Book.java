@@ -28,7 +28,7 @@ public class Book implements Serializable {
 	private String title;
 	private String description;
 	private BigDecimal price;
-	private int stock;
+	private Integer stock = 0;
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "tb_book_author", 
@@ -39,7 +39,7 @@ public class Book implements Serializable {
 	public Book() {
 	}
 
-	public Book(Long id, String title, String description, BigDecimal price, int stock) {
+	public Book(Long id, String title, String description, BigDecimal price, Integer stock) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -80,12 +80,12 @@ public class Book implements Serializable {
 	}
 	
 	
-	public int getStock() {
+	public Integer getStock() {
 		return stock;
 	}
 
 
-	protected void setStock(int stock) {
+	protected void setStock(Integer stock) {
 		this.stock = stock;
 	}
 
@@ -104,13 +104,13 @@ public class Book implements Serializable {
 	}
 
 	// Business Methods
-	public void addToStock(int amount) {
+	public void addToStock(Integer amount) {
 		if (amount > 0) {
 			this.stock += amount;
 		}
 	}
 
-	public boolean removeFromStock(int quantity) {
+	public boolean removeFromStock(Integer quantity) {
 		if (quantity > 0 && this.stock >= quantity) {
 			this.stock -= quantity;
 			return true;
