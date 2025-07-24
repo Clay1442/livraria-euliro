@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_books") 
+@Table(name = "tb_books")
 public class Book implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,14 +26,13 @@ public class Book implements Serializable {
 	private Long id;
 
 	private String title;
+	private String imageUrl;
 	private String description;
 	private BigDecimal price;
 	private Integer stock = 0;
 
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "tb_book_author", 
-		joinColumns = @JoinColumn(name = "book_id"), 
-		inverseJoinColumns = @JoinColumn(name = "author_id"))
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "tb_book_author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private Set<Author> authors = new HashSet<>();
 
 	public Book() {
@@ -45,6 +44,11 @@ public class Book implements Serializable {
 		this.description = description;
 		this.price = price;
 		this.stock = stock;
+	}
+
+	public Book(Long id, String title, String description, BigDecimal price, int stock, String imageUrl) {
+		this(id, title, description, price, stock);
+		this.imageUrl = imageUrl;
 	}
 
 	public Long getId() {
@@ -70,7 +74,7 @@ public class Book implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
@@ -78,27 +82,25 @@ public class Book implements Serializable {
 	public BigDecimal getPrice() {
 		return price;
 	}
-	
-	
+
 	public Integer getStock() {
 		return stock;
 	}
-
 
 	protected void setStock(Integer stock) {
 		this.stock = stock;
 	}
 
 	public void addAuthor(Author author) {
-	    this.authors.add(author);
-	    author.getBooks().add(this);
+		this.authors.add(author);
+		author.getBooks().add(this);
 	}
 
 	public void removeAuthor(Author author) {
-	    this.authors.remove(author);
-	    author.getBooks().remove(this); 
+		this.authors.remove(author);
+		author.getBooks().remove(this);
 	}
-	
+
 	public Set<Author> getAuthors() {
 		return authors;
 	}
@@ -120,12 +122,11 @@ public class Book implements Serializable {
 
 	public void updatePrice(BigDecimal newPrice) {
 		if (newPrice != null && newPrice.compareTo(BigDecimal.ZERO) >= 0) {
-			this.price = newPrice; 
+			this.price = newPrice;
 		} else {
-            throw new IllegalArgumentException("Price cannot be null or negative.");
-        }
+			throw new IllegalArgumentException("Price cannot be null or negative.");
+		}
 	}
-	
 
 	@Override
 	public int hashCode() {
@@ -142,5 +143,13 @@ public class Book implements Serializable {
 			return false;
 		Book other = (Book) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

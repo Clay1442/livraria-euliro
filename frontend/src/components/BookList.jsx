@@ -23,6 +23,7 @@ function BookList() {
             <div className="book-grid">
                 {books.map(book => (<Link to={`/books/${book.id}`} key={book.id} className="book-card-link">
                     <div className="book-card" key={book.id}>
+                <img src={book.imageUrl} alt={book.title} width="100"/> 
                         <h3>{book.title}</h3>
                         <p>{book.authors.map(author => author.name + ' ' + author.lastName).join(', ')}</p>
                         <p className="price">R$ {book.price.toFixed(2)}</p>

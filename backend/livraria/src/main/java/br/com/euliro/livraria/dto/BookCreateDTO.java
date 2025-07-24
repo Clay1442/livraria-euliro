@@ -30,6 +30,8 @@ public class BookCreateDTO {
 	
     @NotEmpty(message = "O livro deve ter pelo menos um autor") 
 	private Set<Long> authorIds;
+    
+    private String imageUrl;
 
 	public String getTitle() {
 		return title;
@@ -69,6 +71,14 @@ public class BookCreateDTO {
 
 	public void setAuthorIds(Set<Long> authorIds) {
 		this.authorIds = authorIds;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }
