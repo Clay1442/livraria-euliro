@@ -1,0 +1,35 @@
+/* src/components/BookList.css */
+
+.book-list-container {
+    padding: 20px;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.book-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #445889;
+    color: #181717;
+}
+
+.book-card h3 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.book-card .price {
+    font-weight: bold;
+    color: #82dd82;
+}
+
+book-card-link {
+    text-decoration: none;
+    color: inherit;
+}
