@@ -1,12 +1,10 @@
-/* src/components/BookList.css */
-
 .book-list-container {
     padding: 20px;
 }
 
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: 1fr; 
     gap: 20px;
 }
 
@@ -14,8 +12,11 @@
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 8px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    text-align: left;
     background-color: #445889;
+    gap: 15px;
     color: #181717;
 }
 
@@ -29,7 +30,11 @@
     color: #82dd82;
 }
 
-book-card-link {
+.book-card-link {
     text-decoration: none;
     color: inherit;
+}
+
+.img-book {
+    width: 20%;
 }

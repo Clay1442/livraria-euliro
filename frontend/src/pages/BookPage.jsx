@@ -1,15 +1,17 @@
-// src/pages/BookPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './BookPage.css'; // Esta linha importa o estilo do arquivo CSS
+import { useCart } from '../contexts/useCart';
+import './BookPage.css';
 
 function BookPage() {
-    const { id } = useParams(); // Pega o 'id' da URL (ex: /books/1)
+    const { id } = useParams(); 
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    
+    const { addItemToCart } = useCart();
 
     useEffect(() => {
         const apiUrl = `http://localhost:8080/books/${id}`;
@@ -23,7 +25,17 @@ function BookPage() {
                 setLoading(false);
                 console.error(error);
             });
-    }, [id]); // O efeito roda novamente se o ID na URL mudar
+    }, [id]);
+   const handleAddToCart = () => {
+        if (book) {
+           
+            const userId = 1; 
+            const quantity = 1; 
+
+            addItemToCart(userId, book.id, quantity);
+        }
+    };
+
 
     if (loading) return <div>Carregando...</div>;
     if (error) return <div>{error}</div>;
@@ -37,7 +49,7 @@ function BookPage() {
             <p><strong>Descrição:</strong> {book.description}</p>
             <p className="price"><strong>Preço:</strong> R$ {book.price.toFixed(2)}</p>
             <p><strong>Estoque:</strong> {book.stock} unidades</p>
-            {/* Aqui no futuro teríamos um botão "Adicionar ao Carrinho" */}
+             <button onClick={handleAddToCart} className="add-to-cart-button">Adicionar ao Carrinho</button>
         </div>
     );
 }

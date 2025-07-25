@@ -1,17 +1,15 @@
-// src/App.jsx
-
 import React from 'react';
-import BookList from './components/BookList'; // Importa nosso novo componente
+import { Outlet } from 'react-router-dom'; // Importe o Outlet
+import Header from './components/Header'; // Importe nosso novo Header
 import './App.css'; // Mantenha o CSS principal se quiser estilos globais
+
 
 function App() {
   return (
       <div className="App">
-        <header className="App-header">
-          <h1>Livraria Euliro</h1>
-        </header>
+        <Header />
         <main>
-          <BookList /> {/* Renderiza o componente da lista de livros */}
+          <Outlet />  
         </main>
       </div>
   );

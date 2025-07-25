@@ -2,7 +2,6 @@ package br.com.euliro.livraria.dto;
 
 import java.math.BigDecimal;
 
-
 import br.com.euliro.livraria.entities.CartItem;
 
 public class CartItemDTO {
@@ -11,6 +10,8 @@ public class CartItemDTO {
 	private BookDTO book;
 	private BigDecimal unitPrice;
 	private Integer quantity;
+    private BigDecimal subtotal; 
+
 
 	public CartItemDTO() {
 	}
@@ -20,6 +21,7 @@ public class CartItemDTO {
 		this.book = new BookDTO(entity.getBook());
 		this.unitPrice = entity.getUnitPrice();
 		this.quantity = entity.getQuantity();
+		this.subtotal = entity.getSubtotal();
 	}
 
 	public Long getId() {
@@ -52,6 +54,14 @@ public class CartItemDTO {
 
 	public void setAmount(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public BigDecimal getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(BigDecimal subtotal) {
+		this.subtotal = subtotal;
 	}
 
 }

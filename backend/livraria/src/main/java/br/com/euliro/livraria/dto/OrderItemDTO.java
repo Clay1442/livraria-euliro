@@ -20,7 +20,7 @@ public class OrderItemDTO {
         this.setDescription(entity.getBook().getDescription());
         this.quantity = entity.getQuantity();
         this.unitPrice = entity.getUnitPrice();
-        this.subtotal = entity.getSubtotal();
+        this.subtotal = entity.getSubtotal();   
     }
 
     public String getBookTitle() {

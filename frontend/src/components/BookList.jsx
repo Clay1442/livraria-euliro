@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Importe o Link
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './BookList.css'; // Esta linha importa o estilo do arquivo CSS
+import './BookList.css';
 
 function BookList() {
     const [books, setBooks] = useState([]);
@@ -21,14 +21,15 @@ function BookList() {
         <div className="book-list-container">
             <h2>Nossos Livros</h2>
             <div className="book-grid">
-                {books.map(book => (<Link to={`/books/${book.id}`} key={book.id} className="book-card-link">
-                    <div className="book-card" key={book.id}>
-                <img src={book.imageUrl} alt={book.title} width="100"/> 
-                        <h3>{book.title}</h3>
-                        <p>{book.authors.map(author => author.name + ' ' + author.lastName).join(', ')}</p>
-                        <p className="price">R$ {book.price.toFixed(2)}</p>
-                    </div>
-                </Link>
+                {books.map(book => (
+                    <Link to={`/books/${book.id}`} key={book.id} className="book-card-link">
+                        <div className="book-card"      >
+                            <img className = "img-book" src={book.imageUrl} alt={book.title} />
+                            <h3>{book.title}</h3>
+                            <p>{book.authors.map(author => author.name + ' ' + author.lastName).join(', ')}</p>
+                            <p className="price">R$ {book.price.toFixed(2)}</p>
+                        </div>
+                    </Link>
                 ))}
             </div>
         </div>

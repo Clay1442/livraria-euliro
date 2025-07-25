@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import br.com.euliro.livraria.dto.CartDTO;
 import br.com.euliro.livraria.services.CartService;
 import jakarta.validation.Valid;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/carts")
 public class CartResource {
@@ -36,13 +38,13 @@ public class CartResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@PostMapping(value = "{userId}/items")
+	@PostMapping(value = "/{userId}/items")
 	public ResponseEntity<CartDTO> addItem(@PathVariable Long userId,@Valid @RequestBody AddItemRequestDTO dto) {
 		CartDTO cart = service.addItem(userId, dto.getBookId(), dto.getQuantity());
 		return ResponseEntity.ok().body(cart);
 	}
 
-	@DeleteMapping(value = "{userId}/items/{itemId}")
+	@DeleteMapping(value = "/{userId}/items/{itemId}")
 	public ResponseEntity<CartDTO> removeItem(@PathVariable Long userId, @PathVariable Long itemId) {
 		CartDTO cart = service.removeItem(userId, itemId);
 		return ResponseEntity.ok().body(cart);
