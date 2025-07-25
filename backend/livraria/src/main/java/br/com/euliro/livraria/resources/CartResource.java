@@ -1,12 +1,14 @@
 package br.com.euliro.livraria.resources;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,8 +41,17 @@ public class CartResource {
 	}
 
 	@PostMapping(value = "/{userId}/items")
-	public ResponseEntity<CartDTO> addItem(@PathVariable Long userId,@Valid @RequestBody AddItemRequestDTO dto) {
+	public ResponseEntity<CartDTO> addItem(@PathVariable Long userId, @Valid @RequestBody AddItemRequestDTO dto) {
 		CartDTO cart = service.addItem(userId, dto.getBookId(), dto.getQuantity());
+		return ResponseEntity.ok().body(cart);
+	}
+
+	@PatchMapping(value = "/user/{userId}/items/{itemId}")
+	public ResponseEntity<CartDTO> updateItemQuantity(@PathVariable Long userId, @PathVariable Long itemId,
+			@RequestBody Map<String, Integer> body) {
+
+		int newQuantity = body.get("quantity");
+		CartDTO cart = service.updateItemQuantity(userId, itemId, newQuantity);
 		return ResponseEntity.ok().body(cart);
 	}
 

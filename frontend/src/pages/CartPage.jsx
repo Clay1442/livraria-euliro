@@ -3,8 +3,9 @@ import { useCart } from '../contexts/useCart';
 import './CartPage.css';
 
 function CartPage() {
-      const { cart, removeItemFromCart } = useCart();
-    
+    const { cart, removeItemFromCart, updateItemQuantity } = useCart();
+    const userId = 1;//Id fixo para teste
+
     if (!cart || cart.items.length === 0) {
         return (
             <div className="cart-container">
@@ -19,8 +20,16 @@ function CartPage() {
     }, 0);
 
     const handleRemoveFromCart = (itemId) => {
-            const userId = 1;
-            removeItemFromCart(userId, itemId);
+        removeItemFromCart(userId, itemId);
+    };
+
+
+    const handleIncreaseQuantity = (item) => {
+        updateItemQuantity(userId, item.id, item.quantity + 1);
+    };
+
+    const handleDecreaseQuantity = (item) => {
+        updateItemQuantity(userId, item.id, item.quantity - 1);
     };
 
     return (
@@ -35,9 +44,15 @@ function CartPage() {
                             <p>Preço Unitário: R$ {item.unitPrice.toFixed(2)}</p>
                             <div className="cart-item-quantity">
                                 <p>Quantidade: {item.quantity}</p>
-                                {/* Futuramente, botões para +/- aqui */}
                             </div>
+                            <div className="cart-item-quantity">
+                                <button onClick={() => handleDecreaseQuantity(item)}>-</button>
+                                <span>{item.quantity}</span>
+                                <button onClick={() => handleIncreaseQuantity(item)}>+</button>
+                            </div>
+
                         </div>
+
                         <div className="cart-item-subtotal">
                             <p>Subtotal: R$ {(item.unitPrice * item.quantity).toFixed(2)}</p>
                             <button onClick={() => handleRemoveFromCart(item.id)} className="remove-item-button">Remover</button>

@@ -1,6 +1,6 @@
 package br.com.euliro.livraria.services;
 
-	import java.util.List;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -106,6 +106,31 @@ public class CartService {
 		}
 
 		cart.removeItem(itemToRemove);
+
+		Cart savedCart = cartRepository.save(cart);
+		return new CartDTO(savedCart);
+	}
+
+	@Transactional
+	public CartDTO updateItemQuantity(Long userId, Long cartItemId, int newQuantity) {
+		Cart cart = findCartEntityByUserId(userId);
+
+		CartItem itemToUpdate = cartItemRepository.findById(cartItemId)
+				.orElseThrow(() -> new ResourceNotFoundException("Item do carrinho não encontrado!"));
+
+		if (!itemToUpdate.getCart().getClient().equals(cart.getClient())) {
+			throw new SecurityException(
+					"Acesso negado: Você esta removendo um item que não pertence ao carrinho do usuário");
+		}
+    
+		if (newQuantity <= 0) {
+			cart.removeItem(itemToUpdate);
+			cartItemRepository.delete(itemToUpdate);
+		} else if (newQuantity > itemToUpdate.getBook().getStock()) {
+			throw new InsufficientStockException("Estoque insuficiente!");
+		} else {
+			itemToUpdate.setQuantity(newQuantity);
+		}
 
 		Cart savedCart = cartRepository.save(cart);
 		return new CartDTO(savedCart);

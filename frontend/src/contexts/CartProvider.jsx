@@ -39,7 +39,21 @@ export function CartProvider({ children }) {
      }
     };
 
-    const value = { cart, fetchCart, addItemToCart, removeItemFromCart};
+     const updateItemQuantity = async (userId, itemId, quantity) => {
+        try {
+            const response = await axios.patch(`http://localhost:8080/carts/user/${userId}/items/${itemId}`, {
+                quantity // Envia o JSON { "quantity": X }
+            });
+            setCart(response.data); // Atualiza o estado com o carrinho retornado
+        } catch (error) {
+            console.error("Erro ao atualizar a quantidade:", error);
+            alert('Não foi possível atualizar a quantidade.');
+        }
+    };
+
+
+
+    const value = { cart, fetchCart, addItemToCart, removeItemFromCart, updateItemQuantity};
 
     return (
         <CartContext.Provider value={value}>
