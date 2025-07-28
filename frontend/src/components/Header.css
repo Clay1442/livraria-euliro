@@ -49,3 +49,40 @@
     font-weight: bold;
     border: 1px solid white;
 }
+
+/* ... estilos existentes ... */
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaço entre os links */
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: #a7a7a7;
+}
+
+.logout-button {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: white;
+    color: #333;
+}

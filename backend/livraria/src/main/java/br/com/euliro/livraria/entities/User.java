@@ -37,7 +37,7 @@ public class User implements Serializable, UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id;                  
 
 	private String name;
 	private String email;
@@ -137,10 +137,11 @@ public class User implements Serializable, UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true; 
+		return true;
 	}
+	
 	@Override
-	public boolean isCredentialsNonExpired() {
+     public boolean isCredentialsNonExpired() {
 		return true; 
 	}
 

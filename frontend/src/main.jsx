@@ -8,12 +8,15 @@ import BookPage from './pages/BookPage.jsx';
 import './index.css'
 import { CartProvider } from './contexts/CartProvider';
 import CartPage from './pages/CartPage.jsx'; 
+import { AuthProvider } from './contexts/AuthProvider'; // Importe o AuthProvider
+import LoginPage from './pages/LoginPage.jsx';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
+    <AuthProvider>
     <CartProvider>
     <BrowserRouter>
       <Routes>
@@ -28,9 +31,12 @@ root.render(
 
         <Route path="carts" element={<CartPage />} />
 
+        <Route path="login" element={<LoginPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
     </CartProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,7 +24,6 @@ import br.com.euliro.livraria.dto.BookUpdateDTO;
 import br.com.euliro.livraria.services.BookService;
 import jakarta.validation.Valid;
 
-@CrossOrigin
 @RestController
 @RequestMapping(value = "/books")
 public class BookResource {
