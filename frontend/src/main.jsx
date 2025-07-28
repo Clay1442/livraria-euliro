@@ -10,6 +10,7 @@ import { CartProvider } from './contexts/CartProvider';
 import CartPage from './pages/CartPage.jsx'; 
 import { AuthProvider } from './contexts/AuthProvider'; // Importe o AuthProvider
 import LoginPage from './pages/LoginPage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -33,6 +34,8 @@ root.render(
 
         <Route path="login" element={<LoginPage />} />
 
+        <Route path="register" element={<RegisterPage />} />
+        
         </Route>
       </Routes>
     </BrowserRouter>

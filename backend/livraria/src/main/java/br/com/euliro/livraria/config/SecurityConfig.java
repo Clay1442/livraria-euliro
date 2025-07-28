@@ -35,22 +35,20 @@ public class SecurityConfig {
 	    		.csrf(csrf -> csrf.disable())
 	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	            .cors(Customizer.withDefaults()) 
-	            .authorizeHttpRequests(auth -> auth
-	                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-	                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-	                .requestMatchers("/h2-console/**").permitAll()
-	                
+	            .authorizeHttpRequests(auth -> auth        
+	            	    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+	            	    .requestMatchers(HttpMethod.POST, "/users").permitAll()
+	            	    .requestMatchers(HttpMethod.GET, "/books").permitAll()  
+	            	    .requestMatchers(HttpMethod.GET, "/books/**").permitAll() 
+
 	            
-	                // Apenas quem tem o papel "ADMIN" pode acessar QUALQUER endpoint de /users
-	                .requestMatchers("/users/**").hasRole("ADMIN") 
-	                
-	                // Para os livros, qualquer um pode ver (GET), mas só ADMIN pode criar/alterar/deletar
-	                .requestMatchers(HttpMethod.GET, "/books").permitAll()
-	                .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-	                .requestMatchers("/books/**").hasRole("ADMIN")
-	                
-		                	                
-	                .anyRequest().authenticated()
+	            	    // Apenas ADMIN pode ver, atualizar ou deletar usuários
+	            	    .requestMatchers("/users/**").hasRole("ADMIN") 
+	            	    // Apenas ADMIN pode criar, atualizar ou deletar livros
+	            	    .requestMatchers("/books/**").hasRole("ADMIN")
+	           
+	            	    .anyRequest().authenticated() 
+	            	
 	            )
 	            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 	            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))

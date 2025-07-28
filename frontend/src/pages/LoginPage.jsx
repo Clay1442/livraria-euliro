@@ -1,9 +1,7 @@
-// src/pages/LoginPage.jsx
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/useAuth';
-import './LoginPage.css'; // 1. Importe o CSS
+import './LoginPage.css';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -15,12 +13,11 @@ function LoginPage() {
         event.preventDefault();
         const success = await login(email, password);
         if (success) {
-            navigate('/'); // Redireciona para a home em caso de sucesso
+            navigate('/'); 
         }
     };
 
     return (
-        // 2. Use as classes CSS no seu JSX
         <div className="login-page">
             <div className="login-container">
                 <h1>Login</h1>
