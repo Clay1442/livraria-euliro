@@ -41,6 +41,14 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
+	@GetMapping(value = "/me")
+	public ResponseEntity<UserDTO> getMe() {
+		UserDTO dto = service.getMe();
+		return ResponseEntity.ok().body(dto);
+	}
+	
+	
+	
 	@PostMapping
 	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO obj) {
 

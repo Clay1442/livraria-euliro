@@ -1,26 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null); 
-    const [token, setToken] = useState(null); 
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null); // Inicia como null
+    const [loading, setLoading] = useState(true);
+
+    // Declara a função logout primeiro
+    const logout = () => {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('authToken');
+        delete axios.defaults.headers.common['Authorization'];
+    };
+
+    // Efeito para carregar o usuário na inicialização
+    useEffect(() => {
+        const loadUserFromToken = async () => {
+            const storedToken = localStorage.getItem('authToken');
+            if (storedToken) {
+                try {
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+                    const response = await axios.get('http://localhost:8080/users/me');
+                    setUser(response.data);
+                    setToken(storedToken);
+                } catch (error) {
+                    console.error("Token inválido ou expirado.", error);
+                    logout(); 
+                }
+            }
+            setLoading(false);
+        };
+
+        loadUserFromToken();
+    }, []); 
 
     const login = async (email, password) => {
         try {
-            const response = await axios.post('http://localhost:8080/auth/login', {
-                email,
-                password
-            });
-            
+            const response = await axios.post('http://localhost:8080/auth/login', { email, password });
             const newToken = response.data.token;
+            
+            localStorage.setItem('authToken', newToken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
             setToken(newToken);
 
-            localStorage.setItem('authToken', newToken);
-
-            axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-                        
-            alert('Login bem-sucedido!');
+            const userResponse = await axios.get('http://localhost:8080/users/me');
+            setUser(userResponse.data);
+            
             return true;
         } catch (error) {
             console.error("Erro no login:", error);
@@ -29,12 +56,9 @@ export function AuthProvider({ children }) {
         }
     };
 
-    const logout = () => {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem('authToken');
-        delete axios.defaults.headers.common['Authorization'];
-    };
+    if (loading) {
+        return <div>Carregando aplicação...</div>;
+    }
 
     const value = { user, token, login, logout, isAuthenticated: !!token };
 

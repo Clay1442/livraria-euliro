@@ -11,7 +11,8 @@ import CartPage from './pages/CartPage.jsx';
 import { AuthProvider } from './contexts/AuthProvider'; // Importe o AuthProvider
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
-
+import ProtectedRoute from './components/ProtectedRoute'; 
+import MyAccountPage from './pages/MyAccountPage';  
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -36,6 +37,10 @@ root.render(
 
         <Route path="register" element={<RegisterPage />} />
         
+  <Route element={<ProtectedRoute />}>
+            <Route path="my-account" element={<MyAccountPage />} />
+        </Route>
+
         </Route>
       </Routes>
     </BrowserRouter>

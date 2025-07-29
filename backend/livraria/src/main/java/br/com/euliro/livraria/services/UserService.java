@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,9 @@ public class UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private AuthenticationService authenticationService;
 
 	// metodo privado auxiliar que retorna uma entidade
 	private User findEntityById(Long id) {
@@ -92,4 +96,13 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
 		repository.save(user);
 	}
+	
+	//captura os dados do usuário de forma mais segura sem expor o id
+	@Transactional(readOnly = true)
+	public UserDTO getMe(){
+		UserDetails userDetails = authenticationService.getAuthenticatedUser();
+		User user = (User) userDetails;
+		return new UserDTO(user);
+	}
+	
 }

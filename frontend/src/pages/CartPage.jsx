@@ -1,10 +1,23 @@
 import React from 'react';
 import { useCart } from '../contexts/useCart';
+import { useNavigate } from 'react-router-dom';
 import './CartPage.css';
+import { useAuth } from '../contexts/useAuth';
 
 function CartPage() {
-    const { cart, removeItemFromCart, updateItemQuantity } = useCart();
-    const userId = 1;//Id fixo para teste
+    const { cart, removeItemFromCart, updateItemQuantity, createOrderFromCart } = useCart();
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+    
+    // Função de guarda para verificar se o usuário está logado antes de qualquer ação
+    const ensureAuthenticated = () => {
+        if (!isAuthenticated) {
+            alert('Você precisa estar logado para gerenciar o carrinho.');
+            navigate('/login');
+            return false;
+        }
+        return true;
+    };
 
     if (!cart || cart.items.length === 0) {
         return (
@@ -20,17 +33,38 @@ function CartPage() {
     }, 0);
 
     const handleRemoveFromCart = (itemId) => {
-        removeItemFromCart(userId, itemId);
+      if (ensureAuthenticated()) {
+            removeItemFromCart(user.id, itemId);
+        }
     };
 
 
     const handleIncreaseQuantity = (item) => {
-        updateItemQuantity(userId, item.id, item.quantity + 1);
+         if (ensureAuthenticated()) {
+            updateItemQuantity(user.id, item.id, item.quantity + 1);
+        }
     };
 
     const handleDecreaseQuantity = (item) => {
-        updateItemQuantity(userId, item.id, item.quantity - 1);
+        if (ensureAuthenticated()) {
+            updateItemQuantity(user.id, item.id, item.quantity - 1);
+        }
     };
+
+    const handleCheckout = async () => {
+      if (ensureAuthenticated()) {
+            const newOrder = await createOrderFromCart(user.id);
+        if (!user) {
+            alert('Você precisa estar logado para finalizar a compra.');
+            navigate('/login');
+            return;
+        }
+        if (newOrder) {
+            navigate('/');
+        }
+    }
+    };
+
 
     return (
         <div className="cart-container">
@@ -54,7 +88,7 @@ function CartPage() {
                         </div>
 
                         <div className="cart-item-subtotal">
-                            <p>Subtotal: R$ {(item.unitPrice * item.quantity).toFixed(2)}</p>
+                            <p>Subtotal: R$ {Number(item.subtotal).toFixed(2)}</p>
                             <button onClick={() => handleRemoveFromCart(item.id)} className="remove-item-button">Remover</button>
                         </div>
                     </div>
@@ -62,7 +96,7 @@ function CartPage() {
             </div>
             <div className="cart-summary">
                 <h3>Total: R$ {totalPrice.toFixed(2)}</h3>
-                <button className="checkout-button">Finalizar Compra</button>
+                <button onClick={handleCheckout} className="checkout-button">Finalizar Compra</button>
             </div>
         </div>
     );

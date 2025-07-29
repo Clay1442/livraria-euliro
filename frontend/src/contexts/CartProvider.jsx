@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CartContext } from './CartContext'; 
+import { CartContext } from './CartContext';
+import { useAuth } from './useAuth';
+
 export function CartProvider({ children }) {
     const [cart, setCart] = useState(null);
+    const { user, isAuthenticated } = useAuth();
 
-     const fetchCart = async (userId) => {
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            fetchCart(user.id);
+        }
+        else {
+            setCart(null); // Limpa o carrinho se o usuário não estiver autenticado
+        }
+    }, [isAuthenticated, user]);
+
+    const fetchCart = async (userId) => {
         try {
             const response = await axios.get(`http://localhost:8080/carts/user/${userId}`);
             setCart(response.data);
@@ -27,19 +39,19 @@ export function CartProvider({ children }) {
             alert('Não foi possível adicionar o livro ao carrinho.');
         }
     };
-    
+
     const removeItemFromCart = async (userId, itemId) => {
-             try {
+        try {
             const response = await axios.delete(`http://localhost:8080/carts/${userId}/items/${itemId}`);
             setCart(response.data);
             alert('Item removido do carrinho!');
         } catch (error) {
-               console.error("Erro ao remover item do carrinho:", error); 
-               alert('Não foi possível remover o item do carrinho.');
-     }
+            console.error("Erro ao remover item do carrinho:", error);
+            alert('Não foi possível remover o item do carrinho.');
+        }
     };
 
-     const updateItemQuantity = async (userId, itemId, quantity) => {
+    const updateItemQuantity = async (userId, itemId, quantity) => {
         try {
             const response = await axios.patch(`http://localhost:8080/carts/user/${userId}/items/${itemId}`, {
                 quantity // Envia o JSON { "quantity": X }
@@ -52,8 +64,22 @@ export function CartProvider({ children }) {
     };
 
 
+    const createOrderFromCart = async (userId) => {
+        try {
+            const response = await axios.post(`http://localhost:8080/orders/from-cart/user/${userId}`);
 
-    const value = { cart, fetchCart, addItemToCart, removeItemFromCart, updateItemQuantity};
+            fetchCart(userId);
+
+            alert('Pedido criado com sucesso!');
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao finalizar a compra:", error);
+            alert('Não foi possível finalizar a compra');
+            return null;
+        }
+    };
+
+    const value = { cart, setCart, fetchCart, addItemToCart, removeItemFromCart, updateItemQuantity, createOrderFromCart };
 
     return (
         <CartContext.Provider value={value}>
