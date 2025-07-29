@@ -13,6 +13,8 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute'; 
 import MyAccountPage from './pages/MyAccountPage';  
+import OrderHistoryPage from './pages/OrderHistoryPage.jsx';
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -37,8 +39,11 @@ root.render(
 
         <Route path="register" element={<RegisterPage />} />
         
+        <Route path="order-confirmation/:orderId" element={<OrderConfirmationPage />} />
+
   <Route element={<ProtectedRoute />}>
             <Route path="my-account" element={<MyAccountPage />} />
+            <Route path="my-orders" element={<OrderHistoryPage />} />
         </Route>
 
         </Route>

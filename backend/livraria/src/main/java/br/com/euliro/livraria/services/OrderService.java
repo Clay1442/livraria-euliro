@@ -5,14 +5,17 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.euliro.livraria.entities.Cart;
 import br.com.euliro.livraria.entities.CartItem;
 import br.com.euliro.livraria.entities.OrderItem;
+import br.com.euliro.livraria.entities.User;
 import br.com.euliro.livraria.dto.OrderDTO;
 import br.com.euliro.livraria.entities.Book;
 import br.com.euliro.livraria.entities.Order;
@@ -127,6 +130,11 @@ public class OrderService {
 		return new OrderDTO(updateOrderEntity);
 	}
 	
-
+	@Transactional(readOnly = true)
+	public List<OrderDTO> findMyOrders() {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Order> list = repository.findByClient(user);
+		return list.stream().map(order -> new OrderDTO(order)).collect(Collectors.toList());
+	}
 	
 }

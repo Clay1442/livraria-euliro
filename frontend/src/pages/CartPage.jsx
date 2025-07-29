@@ -3,7 +3,7 @@ import { useCart } from '../contexts/useCart';
 import { useNavigate } from 'react-router-dom';
 import './CartPage.css';
 import { useAuth } from '../contexts/useAuth';
-
+    
 function CartPage() {
     const { cart, removeItemFromCart, updateItemQuantity, createOrderFromCart, isLoading } = useCart();
     const { user, isAuthenticated } = useAuth();
@@ -71,7 +71,7 @@ function CartPage() {
             return;
         }
         if (newOrder) {
-            navigate('/');
+            navigate(`/order-confirmation/${newOrder.id}`);
         }
     }
     };

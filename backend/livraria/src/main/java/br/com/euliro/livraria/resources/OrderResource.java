@@ -39,7 +39,14 @@ public class OrderResource {
 		return ResponseEntity.ok().body(dto);
 	}
 
+	@GetMapping(value = "/my-orders")
+	public ResponseEntity<List<OrderDTO>> findMyOrders() {
+		List<OrderDTO> list = service.findMyOrders();
+		return ResponseEntity.ok().body(list);
+	}
 
+	
+	
     @PostMapping(value = "from-cart/user/{userId}")
 	public ResponseEntity<OrderDTO> insert(@PathVariable Long userId) {
 	    Cart cart = carrinhoService.findCartEntityByUserId(userId);
