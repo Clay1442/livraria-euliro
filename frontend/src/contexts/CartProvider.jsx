@@ -5,20 +5,27 @@ import { useAuth } from './useAuth';
 
 export function CartProvider({ children }) {
     const [cart, setCart] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const { user, isAuthenticated } = useAuth();
 
     useEffect(() => {
-        if (isAuthenticated && user) {
-            fetchCart(user.id);
-        }
-        else {
-            setCart(null); // Limpa o carrinho se o usuário não estiver autenticado
-        }
+        const loadCart = async () => {
+            if (isAuthenticated && user) {
+                setIsLoading(true); // Começa a carregar
+                await fetchCart(user.id);
+                setIsLoading(false); // Termina de carregar
+            }
+            else {
+                setCart(null);
+                setIsLoading(false); // Termina de carregar (sem carrinho)
+            }
+        };
+        loadCart();
     }, [isAuthenticated, user]);
 
     const fetchCart = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/carts/user/${userId}`);
+            const response = await axios.get(`http://localhost:8080/carts/users/${userId}`);
             setCart(response.data);
             return response.data;
         } catch (error) {
@@ -69,7 +76,6 @@ export function CartProvider({ children }) {
             const response = await axios.post(`http://localhost:8080/orders/from-cart/user/${userId}`);
 
             fetchCart(userId);
-
             alert('Pedido criado com sucesso!');
             return response.data;
         } catch (error) {
@@ -79,7 +85,7 @@ export function CartProvider({ children }) {
         }
     };
 
-    const value = { cart, setCart, fetchCart, addItemToCart, removeItemFromCart, updateItemQuantity, createOrderFromCart };
+    const value = { cart, isLoading,  setCart, fetchCart, addItemToCart, removeItemFromCart, updateItemQuantity, createOrderFromCart };
 
     return (
         <CartContext.Provider value={value}>

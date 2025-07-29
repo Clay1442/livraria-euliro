@@ -40,7 +40,7 @@ public class OrderResource {
 	}
 
 
-    @PostMapping(value = "cart/user/{userId}")
+    @PostMapping(value = "from-cart/user/{userId}")
 	public ResponseEntity<OrderDTO> insert(@PathVariable Long userId) {
 	    Cart cart = carrinhoService.findCartEntityByUserId(userId);
 	    

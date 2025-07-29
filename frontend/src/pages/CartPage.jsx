@@ -5,7 +5,7 @@ import './CartPage.css';
 import { useAuth } from '../contexts/useAuth';
 
 function CartPage() {
-    const { cart, removeItemFromCart, updateItemQuantity, createOrderFromCart } = useCart();
+    const { cart, removeItemFromCart, updateItemQuantity, createOrderFromCart, isLoading } = useCart();
     const { user, isAuthenticated } = useAuth();
     const navigate = useNavigate();
     
@@ -19,7 +19,7 @@ function CartPage() {
         return true;
     };
 
-    if (!cart || cart.items.length === 0) {
+    if (isLoading) {
         return (
             <div className="cart-container">
                 <h2>Seu Carrinho de Compras</h2>
@@ -27,6 +27,17 @@ function CartPage() {
             </div>
         );
     }
+
+
+      if (!cart || cart.items.length === 0) {
+        return (
+            <div className="cart-container">
+                <h2>Seu Carrinho de Compras</h2>
+                <p>Seu carrinho está vazio.</p>
+            </div>
+        );
+    }
+
 
     const totalPrice = cart.items.reduce((total, item) => {
         return total + item.subtotal;

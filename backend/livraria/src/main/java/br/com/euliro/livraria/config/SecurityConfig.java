@@ -34,21 +34,25 @@ public class SecurityConfig {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.cors(Customizer.withDefaults())
-				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-						.requestMatchers(HttpMethod.POST, "/users").permitAll()
-						.requestMatchers(HttpMethod.GET, "/books").permitAll()
-						.requestMatchers(HttpMethod.GET, "/books/**").permitAll().requestMatchers("/h2-console/**")
-						.permitAll()
+				.authorizeHttpRequests(auth -> auth
+					    // --- Endpoints Públicos (não exigem login) ---
+					    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+					    .requestMatchers(HttpMethod.POST, "/users").permitAll()
+					    .requestMatchers(HttpMethod.GET, "/books").permitAll()
+					    .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+					    .requestMatchers("/h2-console/**").permitAll()
+					    
+					 
+					    // Apenas ADMIN pode criar/alterar/deletar livros (POST, PUT, PATCH, DELETE)
+					    .requestMatchers("/books/**").hasRole("ADMIN")
+					    // Apenas ADMIN pode listar, buscar por id, atualizar ou deletar outros usuários
+					    .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+					    .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+					    .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
-						// Apenas ADMIN pode criar, atualizar ou deletar livros
-						.requestMatchers("/books/**").hasRole("ADMIN")
-
-						// Apenas ADMIN pode listar, buscar por id, atualizar ou deletar outros usuários
-						.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-
-						.anyRequest().authenticated())
+					    // --- Endpoints Autenticados (qualquer usuário logado) ---
+					    .anyRequest().authenticated() 
+					)
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())).build();
 	}
