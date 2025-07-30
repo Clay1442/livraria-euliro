@@ -11,9 +11,14 @@ function LoginPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const success = await login(email, password);
-        if (success) {
-            navigate('/'); 
+        const loggedInUser = await login(email, password);
+
+        if (loggedInUser) {
+            if (loggedInUser.roles && loggedInUser.roles.includes('ROLE_ADMIN')) {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         }
     };
 

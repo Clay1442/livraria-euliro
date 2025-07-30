@@ -4,7 +4,7 @@ import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null); // Inicia como null
+    const [token, setToken] = useState(null); 
     const [loading, setLoading] = useState(true);
 
     // Declara a função logout primeiro
@@ -32,7 +32,6 @@ export function AuthProvider({ children }) {
             }
             setLoading(false);
         };
-
         loadUserFromToken();
     }, []); 
 
@@ -48,7 +47,7 @@ export function AuthProvider({ children }) {
             const userResponse = await axios.get('http://localhost:8080/users/me');
             setUser(userResponse.data);
             
-            return true;
+             return userResponse.data;
         } catch (error) {
             console.error("Erro no login:", error);
             alert('Email ou senha inválidos.');
@@ -56,11 +55,17 @@ export function AuthProvider({ children }) {
         }
     };
 
+    // Determina qual é o papel do usuário 
+    const hasRole = (roleName) => {
+            return user && user.roles && user.roles.includes(roleName);    
+        };
+
+
     if (loading) {
         return <div>Carregando aplicação...</div>;
     }
 
-    const value = { user, token, login, logout, isAuthenticated: !!token };
+    const value = { user, token, login, logout, isAuthenticated: !!token, hasRole };
 
     return (
         <AuthContext.Provider value={value}>

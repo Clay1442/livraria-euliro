@@ -49,6 +49,7 @@ public class SecurityConfig {
 					    .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
 					    .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
 					    .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+					   
 
 					    // --- Endpoints Autenticados (qualquer usuário logado) ---
 					    .anyRequest().authenticated() 
