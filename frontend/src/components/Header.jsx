@@ -7,7 +7,7 @@ import './Header.css';
 function Header() {
     // Acessamos o estado do carrinho usando nosso hook
     const { cart } = useCart();
-    const { isAuthenticated, logout } = useAuth(); // 2. Pegar o estado e a função do AuthContext
+    const { isAuthenticated, logout, hasRole } = useAuth(); // 2. Pegar o estado e a função do AuthContext
     const navigate = useNavigate();
 
     // Calculamos o número total de itens no carrinho
@@ -25,12 +25,16 @@ function Header() {
                 <Link to="/" className="logo">
                     <h1>Livraria Euliro</h1>
                 </Link>
-                <nav>
-                    {/* 3. Renderização Condicional baseada no 'isAuthenticated' */}
+                <nav className="main-nav">
+
                     {isAuthenticated ? (
                         <>
                             {/* Mostra isso se o usuário ESTIVER logado */}
-                            <Link to="/my-account">Minha Conta</Link>
+                            {hasRole('ROLE_ADMIN') ? (
+                                <Link to="/admin">Painel Admin</Link>
+                            ) : (
+                                <Link to="/my-account">Minha Conta</Link>
+                            )}
                             <button onClick={handleLogout} className="logout-button">Sair</button>
                         </>
                     ) : (
@@ -39,11 +43,12 @@ function Header() {
                             <Link to="/login">Login</Link>
                             <Link to="/register">Cadastre-se</Link>
                         </>
+                    )}{!hasRole('ROLE_ADMIN') && isAuthenticated && (
+                        <Link to="/carts" className="cart-link">
+                            <span className="cart-icon">🛒</span>
+                            <span className="cart-count">{itemCount}</span>
+                        </Link>
                     )}
-                    <Link to="/carts" className="cart-link">
-                        <span className="cart-icon">🛒</span>
-                        <span className="cart-count">{itemCount}</span>
-                    </Link>
                 </nav>
             </div>
         </header>

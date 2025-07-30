@@ -33,27 +33,29 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.cors(Customizer.withDefaults())
-				.authorizeHttpRequests(auth -> auth
-					    // --- Endpoints Públicos (não exigem login) ---
-					    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-					    .requestMatchers(HttpMethod.POST, "/users").permitAll()
-					    .requestMatchers(HttpMethod.GET, "/books").permitAll()
-					    .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-					    .requestMatchers("/h2-console/**").permitAll()
-					    
-					 
-					    // Apenas ADMIN pode criar/alterar/deletar livros (POST, PUT, PATCH, DELETE)
-					    .requestMatchers("/books/**").hasRole("ADMIN")
-					    // Apenas ADMIN pode listar, buscar por id, atualizar ou deletar outros usuários
-					    .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-					    .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
-					    .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-					   
+				.cors(Customizer.withDefaults()).authorizeHttpRequests(auth -> auth
+						// --- Endpoints Públicos (não exigem login) ---
+						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+						.requestMatchers(HttpMethod.POST, "/users").permitAll()
+						.requestMatchers(HttpMethod.GET, "/books").permitAll()
+						.requestMatchers(HttpMethod.GET, "/books/**").permitAll().requestMatchers("/h2-console/**")
+						.permitAll()
 
-					    // --- Endpoints Autenticados (qualquer usuário logado) ---
-					    .anyRequest().authenticated() 
-					)
+						// Apenas usuários com o papel de CLIENTE podem manipular o carrinho
+						.requestMatchers("/carts/**").hasRole("CLIENTE")
+						// Apenas CLIENTES podem criar pedidos a partir do carrinho
+						.requestMatchers(HttpMethod.POST, "/orders/from-cart/**").hasRole("CLIENTE")
+						// Qualquer usuário LOGADO pode ver seus próprios pedidos
+						.requestMatchers("/orders/**").authenticated()
+						// Apenas ADMIN pode criar/alterar/deletar livros (POST, PUT, PATCH, DELETE)
+						.requestMatchers("/books/**").hasRole("ADMIN")
+						// Apenas ADMIN pode listar, buscar por id, atualizar ou deletar outros usuários
+						.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+
+						// --- Endpoints Autenticados (qualquer usuário logado) ---
+						.anyRequest().authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())).build();
 	}
