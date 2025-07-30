@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +28,10 @@ public class Book implements Serializable {
 
 	private String title;
 	private String imageUrl;
+
+	@Column(columnDefinition = "TEXT")
 	private String description;
+	
 	private BigDecimal price;
 	private Integer stock = 0;
 

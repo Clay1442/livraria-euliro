@@ -8,7 +8,7 @@ import BookPage from './pages/BookPage.jsx';
 import './index.css'
 import { CartProvider } from './contexts/CartProvider';
 import CartPage from './pages/CartPage.jsx';
-import { AuthProvider } from './contexts/AuthProvider'; // Importe o AuthProvider
+import { AuthProvider } from './contexts/AuthProvider'; 
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -17,6 +17,8 @@ import OrderHistoryPage from './pages/OrderHistoryPage.jsx';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminBooksPage from './pages/AdminBooksPage.jsx';
+import EditBookPage from './pages/EditBookPage.jsx'; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -45,6 +47,8 @@ root.render(
 
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
+                 <Route path="/admin/books" element={<AdminBooksPage />} />
+                 <Route path="/admin/books/edit/:id" element={<EditBookPage />} />                 
               </Route>
 
               <Route element={<ProtectedRoute />}>
