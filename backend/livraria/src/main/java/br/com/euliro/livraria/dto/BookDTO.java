@@ -1,7 +1,6 @@
 package br.com.euliro.livraria.dto;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class BookDTO {
 	private BigDecimal price;
     private Integer stock;
     private String imageUrl;
-	private Set<AuthorDTO> authors = new HashSet<>();
+	private Set<AuthorDTO> authors;
 
 	public BookDTO() {
 

@@ -59,7 +59,7 @@ public class BookResource {
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<BookUpdateDTO> update(@PathVariable Long id, @RequestBody BookUpdateDTO dto) {
-		dto = service.updateDescription(id, dto);
+		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 
 	}

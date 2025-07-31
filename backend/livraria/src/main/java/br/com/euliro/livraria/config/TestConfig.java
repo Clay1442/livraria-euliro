@@ -39,7 +39,8 @@ public class TestConfig implements CommandLineRunner {
 
         Author author1 = new Author(null, "J.R.R.", "Tolkien");
         Author author2 = new Author(null, "J.K.", "Rowling");
-        authorRepository.saveAll(Arrays.asList(author1, author2));
+        Author author3 = new Author(null, "Frank", "Miller");
+        authorRepository.saveAll(Arrays.asList(author1, author2, author3));
 
         User user1 = new User(null, "João Silva", "joao@gmail.com", "123456", LocalDate.parse("1990-05-15"));
         User user2 = new User(null, "Ana Costa", "ana@gmail.com", "654321", LocalDate.parse("1988-11-20"));

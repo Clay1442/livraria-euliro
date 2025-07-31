@@ -1,5 +1,7 @@
 package br.com.euliro.livraria.dto;
 
+import java.util.Set;
+
 import br.com.euliro.livraria.entities.Book;
 import jakarta.validation.constraints.NotBlank;
 
@@ -9,6 +11,8 @@ public class BookUpdateDTO {
 	private String title;
 
 	private String description;
+	
+    private Set<Long> authorIds;
 
 	public BookUpdateDTO() {
 
@@ -33,6 +37,14 @@ public class BookUpdateDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Set<Long> getAuthorIds() {
+		return authorIds;
+	}
+
+	public void setAuthorIds(Set<Long> authorIds) {
+		this.authorIds = authorIds;
 	}
 
 }

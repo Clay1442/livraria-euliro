@@ -84,16 +84,21 @@ public class BookService {
 	}
 
 	@Transactional
-	public BookUpdateDTO updateDescription(Long id, BookUpdateDTO newData) {
+	public BookUpdateDTO update(Long id, BookUpdateDTO newData) {
 		Book entity = findEntityById(id);
-		updateDescriptionData(entity, newData);
-		Book savedBook = repository.save(entity);
-		return new BookUpdateDTO(savedBook);
-	}
 
-	private void updateDescriptionData(Book entity, BookUpdateDTO newData) {
 		entity.setTitle(newData.getTitle());
 		entity.setDescription(newData.getDescription());
+
+		entity.getAuthors().clear();
+		for (Long authorId : newData.getAuthorIds()) {
+			Author author = authorService.findEntityById(authorId);
+			entity.addAuthor(author);
+		}
+
+		Book savedEntity = repository.save(entity);
+
+		return new BookUpdateDTO(savedEntity);
 	}
 
 	@Transactional

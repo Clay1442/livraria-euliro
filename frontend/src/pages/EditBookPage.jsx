@@ -7,32 +7,44 @@ function EditBookPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [originalData, setOriginalData] = useState(null);
+    const [allAuthors, setAllAuthors] = useState([]);
     const [currentStock, setCurrentStock] = useState(0);
     const [adjustmentQuantity, setAdjustmentQuantity] = useState(1);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         price: '',
+        authorIds: [],
         quantity: ''
     });
 
-
     useEffect(() => {
-        axios.get(`http://localhost:8080/books/${id}`)
-            .then(response => {
-                setFormData(response.data);
-                //armazena os dados originais para comparação
-                setOriginalData(response.data);
-                // armazena o estoque atual
-                setCurrentStock(response.data.stock);
+        const fetchBookData = axios.get(`http://localhost:8080/books/${id}`);
+        const fetchAuthorsData = axios.get('http://localhost:8080/authors');
+
+        Promise.all([fetchBookData, fetchAuthorsData])
+            .then(([bookResponse, authorsResponse]) => {
+                const { title, description, price, stock, authors } = bookResponse.data;
+                const currentAuthorIds = authors.map(author => author.id);
+
+                setFormData({ title, description, price, authorIds: currentAuthorIds });
+                setCurrentStock(stock);
+                setOriginalData(bookResponse.data);
+                setAllAuthors(authorsResponse.data);
             })
-            .catch(error => console.error("Erro ao buscar dados do livro:", error));
+            .catch(error => console.error("Erro ao buscar dados:", error));
     }, [id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
+
+    const handleAuthorChange = (e) => {
+        const selectedIds = Array.from(e.target.selectedOptions, option => Number(option.value));
+        setFormData(prev => ({ ...prev, authorIds: selectedIds }));
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,14 +55,15 @@ function EditBookPage() {
             updatePromises.push(
                 axios.put(`http://localhost:8080/books/${id}`, {
                     title: formData.title,
-                    description: formData.description
+                    description: formData.description,
+                    authorIds: formData.authorIds
                 })
             );
 
             // atualiza o preço se ele tiver mudado
             if (formData.price !== originalData.price) {
                 updatePromises.push(
-                    axios.patch(`http://localhost:8080/books/${id}/price`, { price: formData.price })
+                    axios.patch(`http://localhost:8080/books/${id}/price`, { price : formData.price })
                 );
             }
             await Promise.all(updatePromises);
@@ -94,6 +107,18 @@ function EditBookPage() {
                     <label htmlFor="price">Preço</label>
                     <input type="number" step="0.01" id="price" name="price" value={formData.price} onChange={handleChange} required />
                 </div>
+                <div className="form-group">
+                    <label htmlFor="authorIds">Autores</label>
+                    <select id="authorIds" name="authorIds" multiple={true} value={formData.authorIds} onChange={handleAuthorChange} required>
+                        {allAuthors.map(author => (
+                            <option key={author.id} value={author.id}>
+                                {author.name} {author.lastName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+
                 <button type="submit" className="save-button">Salvar Todas as Alterações</button>
             </form>
 
