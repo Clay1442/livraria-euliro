@@ -14,8 +14,8 @@ public class BookDTO {
 	private String title;
 	private String description;
 	private BigDecimal price;
-    private String imageUrl;
     private Integer stock;
+    private String imageUrl;
 	private Set<AuthorDTO> authors = new HashSet<>();
 
 	public BookDTO() {
@@ -27,9 +27,9 @@ public class BookDTO {
       this.title = entity.getTitle();
       this.description = entity.getDescription();
       this.price = entity.getPrice();
+      this.stock = entity.getStock();
+      this.imageUrl = entity.getImageUrl();
       this.authors = entity.getAuthors().stream().map(author -> new AuthorDTO(author)).collect(Collectors.toSet());
-      this.setStock(entity.getStock());
-      this.setImageUrl(entity.getImageUrl());
 	}
 
 	

@@ -50,7 +50,9 @@ public class BookService {
 		newBook.setTitle(dto.getTitle());
 		newBook.setDescription(dto.getDescription());
 		newBook.setPrice(dto.getPrice());
+		newBook.setImageUrl(dto.getImageUrl());
 		newBook.addToStock(dto.getStock());
+		
 
 		for (Long authorId : dto.getAuthorIds()) {
 			Author author = authorService.findEntityById(authorId);

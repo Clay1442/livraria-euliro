@@ -35,8 +35,12 @@ function AdminBooksPage() {
 
 
     return (
+        
         <div style={{ padding: '40px' }}>
             <h1>Gerenciamento de Livros</h1>
+             <Link to="/admin/books/new">
+                    <button style={{ padding: '10px 15px', fontSize: '1em' }}>+ Adicionar Novo Livro</button>
+                </Link>
             <table border="1" style={{ width: '100%', marginTop: '20px' }}>
                 <thead>
                     <tr>
