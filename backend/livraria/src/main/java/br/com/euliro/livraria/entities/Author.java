@@ -27,6 +27,8 @@ public class Author implements Serializable {
     
     private String lastName;
     
+    private boolean active = true;
+    
     @JsonIgnore
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
@@ -92,6 +94,14 @@ public class Author implements Serializable {
 			return false;
 		Author other = (Author) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
     
 	

@@ -20,6 +20,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminBooksPage from './pages/AdminBooksPage.jsx';
 import EditBookPage from './pages/EditBookPage.jsx'; 
 import AdminCreateBookPage from './pages/AdminCreateBookPage.jsx';
+import AdminAuthorsPage from './pages/AdminAuthorsPage.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -51,6 +52,7 @@ root.render(
                  <Route path="/admin/books" element={<AdminBooksPage />} />
                  <Route path="/admin/books/edit/:id" element={<EditBookPage />} />                 
                  <Route path="/admin/books/new" element={<AdminCreateBookPage />} /> 
+                 <Route path="/admin/authors" element={<AdminAuthorsPage />} /> 
               </Route>
 
               <Route element={<ProtectedRoute />}>

@@ -16,6 +16,7 @@ import br.com.euliro.livraria.entities.Author;
 import br.com.euliro.livraria.entities.Book;
 import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
 import br.com.euliro.livraria.repositories.BookRepository;
+import br.com.euliro.livraria.repositories.OrderItemRepository;
 
 @Service
 public class BookService {
@@ -24,17 +25,20 @@ public class BookService {
 	private BookRepository repository;
 
 	@Autowired
+	private OrderItemRepository orderItemRepository;
+
+	@Autowired
 	private AuthorService authorService;
 
 	// método auxiliar que retorna uma entidade
 	public Book findEntityById(Long id) {
-		Optional<Book> bookOptional = repository.findById(id);
+		Optional<Book> bookOptional = repository.findByIdAndActiveTrue(id);
 		return bookOptional.orElseThrow(() -> new ResourceNotFoundException("Book não encontrado! Id: " + id));
 	}
 
 	@Transactional(readOnly = true)
 	public List<BookDTO> findAll() {
-		List<Book> list = repository.findAll();
+		List<Book> list = repository.findAllByActiveTrue();
 		return list.stream().map(book -> new BookDTO(book)).collect(Collectors.toList());
 	}
 
@@ -52,7 +56,6 @@ public class BookService {
 		newBook.setPrice(dto.getPrice());
 		newBook.setImageUrl(dto.getImageUrl());
 		newBook.addToStock(dto.getStock());
-		
 
 		for (Long authorId : dto.getAuthorIds()) {
 			Author author = authorService.findEntityById(authorId);
@@ -65,8 +68,19 @@ public class BookService {
 	}
 
 	public void delete(Long id) {
-		findById(id);
-		repository.deleteById(id);
+		Book book = findEntityById(id);
+
+		boolean isBookInAnyOrder = orderItemRepository.existsByBook(book);
+		if (isBookInAnyOrder) {
+			// Se já foi vendido apenas desativa do client side
+			book.setActive(false);
+			repository.save(book);
+		} else {
+			book.getAuthors().clear(); // Limpa a relação M:N entre book e author
+			// Se nunca foi vendido é deletado do banco
+			repository.delete(book);
+		}
+
 	}
 
 	@Transactional
@@ -110,5 +124,5 @@ public class BookService {
 		Book savedBook = repository.save(book);
 		return new BookDTO(savedBook);
 	}
-	
+
 }

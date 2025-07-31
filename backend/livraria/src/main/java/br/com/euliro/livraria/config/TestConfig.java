@@ -54,9 +54,9 @@ public class TestConfig implements CommandLineRunner {
         Book book2 = new Book(null, "Harry Potter", "O início da saga...", new BigDecimal("50.00"), 30, "https://rocco.com.br/wp-content/uploads/2022/12/9788532511010.jpg");
         Book book3 = new Book(null, "The Hobbit", "A aventura...", new BigDecimal("70.00"), 15, "https://m.media-amazon.com/images/I/519AfthmOLL._ControlCacheEqualizer_.jpg");
         
-        book1.getAuthors().add(author1);
-        book2.getAuthors().add(author2);
-        book3.getAuthors().add(author1);
+        book1.addAuthor(author2);
+        book2.addAuthor(author2);
+        book3.addAuthor(author1);
         bookRepository.saveAll(Arrays.asList(book1, book2, book3));
 
         Order order1 = new Order(null, savedUser1, Instant.parse("2025-07-10T19:53:07Z"), OrderStatus.PAGAMENTO_APROVADO);
