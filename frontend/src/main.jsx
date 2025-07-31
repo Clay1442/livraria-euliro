@@ -23,6 +23,9 @@ import AdminCreateBookPage from './pages/AdminCreateBookPage.jsx';
 import AdminAuthorsPage from './pages/AdminAuthorsPage.jsx';
 import AdminEditAuthorPage from './pages/AdminEditAuthorPage.jsx';
 import AdminCreateAuthor from './pages/AdminCreateAuthor.jsx';
+import AdminUsersPage from './pages/AdminUsersPage.jsx';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -57,6 +60,7 @@ root.render(
                  <Route path="/admin/authors" element={<AdminAuthorsPage />} /> 
                  <Route path="/admin/authors/edit/:id" element={<AdminEditAuthorPage />} /> 
                  <Route path="/admin/authors/new" element={<AdminCreateAuthor />} /> 
+                 <Route path="/admin/users" element={<AdminUsersPage />} /> 
               </Route>
 
               <Route element={<ProtectedRoute />}>

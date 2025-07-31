@@ -1,0 +1,60 @@
+// src/pages/AdminUsersPage.jsx
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+
+function AdminUsersPage() {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // Este endpoint é protegido e só deve funcionar se logado como ADMIN
+        axios.get('http://localhost:8080/users')
+            .then(response => {
+                setUsers(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error("Erro ao buscar usuários!", error);
+                // Pode ser um erro 403 (Forbidden) se o usuário não for admin
+                alert('Você não tem permissão para acessar esta página.');
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <div>Carregando usuários...</div>;
+
+    return (
+        <div style={{ padding: '40px' }}>
+            <h1>Gerenciamento de Usuários</h1>
+            <table border="1" style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
+                <thead>
+                    <tr>
+                        <th style={{padding: '8px'}}>ID</th>
+                        <th style={{padding: '8px'}}>Nome</th>
+                        <th style={{padding: '8px'}}>Email</th>
+                        <th style={{padding: '8px'}}>Papéis (Roles)</th>
+                        <th style={{padding: '8px'}}>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map(user => (
+                        <tr key={user.id}>
+                            <td style={{padding: '8px'}}>{user.id}</td>
+                            <td style={{padding: '8px'}}>{user.name}</td>
+                            <td style={{padding: '8px'}}>{user.email}</td>
+                            <td style={{padding: '8px'}}>{user.roles.join(', ')}</td>
+                            <td style={{padding: '8px'}}>
+                                <button>Editar Papéis</button>
+                                <button>Desativar</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
+export default AdminUsersPage;
