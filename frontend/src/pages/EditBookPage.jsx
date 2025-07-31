@@ -51,7 +51,7 @@ function EditBookPage() {
         try {
             const updatePromises = [];
 
-            // Atualiza título e descrição
+            // Atualiza título e descrição e o autor
             updatePromises.push(
                 axios.put(`http://localhost:8080/books/${id}`, {
                     title: formData.title,
