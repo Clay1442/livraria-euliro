@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../contexts/useAuth';
 import axios from 'axios';
 import { useCart } from '../contexts/useCart';
 import './BookPage.css';
@@ -9,6 +10,7 @@ function BookPage() {
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user } = useAuth();
 
     
     const { addItemToCart } = useCart();
@@ -27,12 +29,11 @@ function BookPage() {
             });
     }, [id]);
    const handleAddToCart = () => {
-        if (book) {
-           
-            const userId = 1; 
-            const quantity = 1; 
-
-            addItemToCart(userId, book.id, quantity);
+        if (book && user) {         
+            const quantity = 1;
+            addItemToCart(user.id, book.id, quantity);
+        } else {
+            alert('você precisa estar logado para adicionar livros ao carrinho.');
         }
     };
 

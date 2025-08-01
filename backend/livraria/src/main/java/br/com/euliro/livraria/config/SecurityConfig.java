@@ -38,23 +38,25 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/users").permitAll()
 						.requestMatchers(HttpMethod.GET, "/books").permitAll()
-						.requestMatchers(HttpMethod.GET, "/books/**").permitAll().requestMatchers("/h2-console/**")
-						.permitAll()
+						.requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+						.requestMatchers("/h2-console/**").permitAll()
 
-						// Apenas usuários com o papel de CLIENTE podem manipular o carrinho
-						.requestMatchers("/carts/**").hasRole("CLIENTE")
-						// Apenas CLIENTES podem criar pedidos a partir do carrinho
-						.requestMatchers(HttpMethod.POST, "/orders/from-cart/**").hasRole("CLIENTE")
 						// Qualquer usuário LOGADO pode ver seus próprios pedidos
 						.requestMatchers("/orders/**").authenticated()
 						// Apenas ADMIN pode criar/alterar/deletar livros (POST, PUT, PATCH, DELETE)
-						.requestMatchers("/books/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/books/**").hasRole("ADMIN")
+			            .requestMatchers(HttpMethod.PUT, "/books/**").hasRole("ADMIN")
+			            .requestMatchers(HttpMethod.PATCH, "/books/**").hasRole("ADMIN")
+			            .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
+
 						// Apenas ADMIN pode listar, buscar por id, atualizar ou deletar outros usuários
 						.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/users/{id}/roles").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-						.requestMatchers("/authors/**").hasRole("ADMIN")
 
+						.requestMatchers("/authors/**").hasRole("ADMIN")
+				
 						// --- Endpoints Autenticados (qualquer usuário logado) ---
 						.anyRequest().authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

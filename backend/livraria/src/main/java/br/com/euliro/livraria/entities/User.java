@@ -37,7 +37,7 @@ public class User implements Serializable, UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;                  
+	private Long id;
 
 	private String name;
 	private String email;
@@ -55,6 +55,8 @@ public class User implements Serializable, UserDetails {
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private Set<Order> orders = new HashSet<>();
+
+	private boolean active = true;
 
 	public User() {
 	}
@@ -120,10 +122,10 @@ public class User implements Serializable, UserDetails {
 	public String getPassword() {
 		return password;
 	}
-	
-	 public void setPassword(String password) {
-			this.password = password;
-		}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	@Override
 	public String getUsername() {
@@ -132,22 +134,22 @@ public class User implements Serializable, UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true; 
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-	
+
 	@Override
-     public boolean isCredentialsNonExpired() {
-		return true; 
+	public boolean isCredentialsNonExpired() {
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return this.active;
 	}
 
 	@Override
@@ -165,5 +167,13 @@ public class User implements Serializable, UserDetails {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

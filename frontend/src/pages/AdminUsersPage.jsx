@@ -1,15 +1,12 @@
-// src/pages/AdminUsersPage.jsx
-
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom"; 
 
 function AdminUsersPage() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Este endpoint é protegido e só deve funcionar se logado como ADMIN
         axios.get('http://localhost:8080/users')
             .then(response => {
                 setUsers(response.data);
@@ -17,11 +14,23 @@ function AdminUsersPage() {
             })
             .catch(error => {
                 console.error("Erro ao buscar usuários!", error);
-                // Pode ser um erro 403 (Forbidden) se o usuário não for admin
                 alert('Você não tem permissão para acessar esta página.');
                 setLoading(false);
             });
     }, []);
+
+    const handleDelete = async (userId) => {
+        if (window.confirm("Tem certeza que deseja desativar este usuário?")) {
+            try {
+                await axios.delete(`http://localhost:8080/users/${userId}`);
+                alert("Usuário desativado com sucesso!");
+                setUsers(users.filter(user => user.id !== userId));
+            } catch (error) {
+                console.error("Erro ao desativar usuario!", error);
+                alert("Não foi possível desativar o usuário.");
+            }
+        }
+    };
 
     if (loading) return <div>Carregando usuários...</div>;
 
@@ -46,8 +55,10 @@ function AdminUsersPage() {
                             <td style={{padding: '8px'}}>{user.email}</td>
                             <td style={{padding: '8px'}}>{user.roles.join(', ')}</td>
                             <td style={{padding: '8px'}}>
-                                <button>Editar Papéis</button>
-                                <button>Desativar</button>
+                                <Link to={`/admin/users/edit/${user.id}`}>
+                                    <button>Editar</button>
+                                </Link>
+                                <button onClick={() => handleDelete(user.id)}>Desativar</button>
                             </td>
                         </tr>
                     ))}

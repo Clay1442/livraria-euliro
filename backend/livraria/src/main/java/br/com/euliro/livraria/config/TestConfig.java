@@ -49,7 +49,10 @@ public class TestConfig implements CommandLineRunner {
         User savedUser1 = userService.create(dtoUser1);
         User savedUser2 = userService.create(dtoUser2);
         savedUser2.addRole(Role.ROLE_ADMIN);
+        savedUser1.addRole(Role.ROLE_CLIENTE);
+        
         userRepository.save(savedUser2); // Salva a mudança do papel no banco
+        userRepository.save(savedUser1); // Salva a mudança do papel no banco
         
         Book book1 = new Book(null, "The Lord of the Rings", "A jornada...", new BigDecimal("150.00"), 20, "https://m.media-amazon.com/images/I/71ZLavBjpRL._SY425_.jpg");
         Book book2 = new Book(null, "Harry Potter", "O início da saga...", new BigDecimal("50.00"), 30, "https://rocco.com.br/wp-content/uploads/2022/12/9788532511010.jpg");

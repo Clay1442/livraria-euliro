@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.euliro.livraria.dto.UpdateRolesDTO;
 import br.com.euliro.livraria.dto.UserCreateDTO;
 import br.com.euliro.livraria.dto.UserDTO;
 import br.com.euliro.livraria.dto.UserUpdateDTO;
@@ -73,6 +74,12 @@ public class UserResource {
 	public ResponseEntity<UserUpdateDTO> update(@PathVariable Long id, @RequestBody UserUpdateDTO dto) {
 		UserUpdateDTO userUpdate = service.update(id, dto);
 		return ResponseEntity.ok().body(userUpdate);
+	}
+	
+	@PutMapping(value = "/{id}/roles")
+	public ResponseEntity<UserDTO> updateRoles(@PathVariable Long id, @RequestBody UpdateRolesDTO dto) {
+	    UserDTO updatedUserDto = service.updateRoles(id, dto);
+	    return ResponseEntity.ok().body(updatedUserDto);
 	}
 
 }
