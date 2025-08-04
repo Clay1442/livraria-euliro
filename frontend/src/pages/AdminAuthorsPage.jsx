@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import './AdminAuthorsPage.css';
+import { toast } from 'react-toastify';
+import CustomConfirmModal from '../components/CustomConfirmModal';
+import { confirmAlert } from 'react-confirm-alert';
 
 function AdminAuthorsPage() {
     const [authors, setAuthors] = useState([]);
@@ -18,65 +22,64 @@ function AdminAuthorsPage() {
     }, []);
 
 
-    const handleDelete = async (authorId) => {
-        if (window.confirm("Tem certeza que deseja deletar este livro?")) {
-            try {
-                await axios.delete(`http://localhost:8080/authors/${authorId}`)
-                alert("Autor deletado com sucesso!");
-                //Remover da lista localmente
-                setAuthors(authors.filter(author => author.id !== authorId));
+     const handleDelete = (authorId) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <CustomConfirmModal
+                        title="Confirmar Exclusão"
+                        message="Tem certeza que deseja desativar este autor? Esta ação não pode ser desfeita."
+                        onClose={onClose}
+                        onConfirm={async () => {
+                            try {
+                                await axios.delete(`http://localhost:8080/authors/${authorId}`);
+                                toast.success("Autor desativado com sucesso!");
+                                setAuthors(authors.filter(author => author.id !== authorId));
+                            } catch (error) {
+                                console.error("Erro ao desativar Autor!", error);
+                                toast.error(error.response?.data?.message || "Não foi possível desativar o Autor.");
+                            }
+                            onClose();
+                        }}
+                    />
+                );
             }
-            catch (error) {
-                console.error("Erro ao deletar Autor!", error);
-                alert("Não foi possível deletar o Autor.");
-            }
-        }
+        });
     };
 
-
     return (
-        
-        <div style={{ padding: '40px' }}>
+        <div className="admin-page-container">
             <h1>Gerenciamento de Autores</h1>
-             <Link to="/admin/authors/new">
-                    <button style={{ padding: '10px 15px', fontSize: '1em' }}>+ Adicionar Novo Autor</button>
+            <div className="admin-page-header">
+                <Link to="/admin/authors/new" className="add-new-button">
+                    + Adicionar Novo Autor
                 </Link>
-            <table border="1" style={{ width: '100%', marginTop: '20px' }}>
+            </div>
+            <table className="admin-table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nome</th>
+                        <th>Nome Completo</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {authors.length === 0 ? (
-                        <tr>
-                            <td colSpan="3">Nenhum autor encontrado.</td>
+                    {authors.map(author => (
+                        <tr key={author.id}>
+                            <td>{author.id}</td>
+                            <td>{author.name + ' ' + author.lastName}</td>
+                            <td className="actions-cell">
+                                <Link to={`/admin/authors/edit/${author.id}`}>
+                                    <button className="edit-button">Editar</button>
+                                </Link>
+                                <button className="delete-button" onClick={() => handleDelete(author.id)}>Deletar</button>
+                            </td>
                         </tr>
-                    ) : (
-                        authors.filter(author => author != null).map(author => (
-                            <tr key={author.id}>
-                                <td>{author.id}</td>                                 
-                                <td>{author.name + ' ' + author.lastName}</td>                                 
-                                <td>
-                                    <Link to={`/admin/authors/edit/${author.id}`}>
-                                        <button>Editar</button>
-                                    </Link>
-                                    <button onClick={() => handleDelete(author.id)}>Deletar</button>
-                                </td>
-                            </tr>
-                        ))
-                    )}
+                    ))}
                 </tbody>
             </table>
         </div>
     );
-
 }
 
 export default AdminAuthorsPage;
-
-
-
-

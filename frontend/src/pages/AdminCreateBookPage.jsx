@@ -49,9 +49,9 @@ const [formData, setFormData] = useState({
     }
     
  return (
-        <div className="edit-book-page">
+        <div className="create-book-page">
             <h2>Adicionar Novo Livro</h2>
-            <form onSubmit={handleSubmit} className="edit-book-form">
+            <form onSubmit={handleSubmit} className="create-book-form">
                 <div className="form-group">
                     <label htmlFor="title">Título</label>
                     <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
@@ -82,7 +82,7 @@ const [formData, setFormData] = useState({
                         ))}
                     </select>
                 </div>
-                <button type="submit" className="save-button">Criar Livro</button>
+                <button type="submit" className="create-button">Criar Livro</button>
             </form>
         </div>
     );

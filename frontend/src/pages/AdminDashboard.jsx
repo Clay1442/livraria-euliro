@@ -1,23 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
+import './AdminDashboard.css'; 
 
 function AdminDashboard() {
     return (
-        <div style={{ padding: '40px' }}>
+        <div className="admin-dashboard">
             <h1>Painel do Administrador</h1>
             <p>Bem-vindo à área de gerenciamento da Livraria Euliro.</p>
-            <nav>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                    <li style={{ margin: '10px 0' }}>
-                        <Link to="/admin/books">Gerenciar Livros</Link>
-                    </li>
-                    <li style={{ margin: '10px 0' }}>
-                        <Link to="/admin/authors">Gerenciar Autores</Link>
-                    </li>
-                    <li style={{ margin: '10px 0' }}>
-                        <Link to="/admin/users">Gerenciar Usuários</Link> 
-                    </li>
-                </ul>
+            <nav className="dashboard-nav">
+                <Link to="/admin/books" className="nav-card">
+                    Gerenciar Livros
+                </Link>
+                <Link to="/admin/authors" className="nav-card">
+                    Gerenciar Autores
+                </Link>
+                <Link to="/admin/users" className="nav-card">
+                    Gerenciar Usuários
+                </Link>
             </nav>
         </div>
     );

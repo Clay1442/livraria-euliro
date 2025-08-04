@@ -1,30 +1,50 @@
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh; /* Faz a página ocupar quase toda a altura da tela */
-    background-color: #f4f4f4;
-}
-
 .login-container {
-    background-color: white;
+    background-color: #023f5dbb;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px; /* Limita a largura do formulário */
+    max-width: 400px; 
     text-align: center;
 }
 
 .login-container h1 {
     margin-bottom: 25px;
-    color: #333;
+    color: #000000;
 }
 
+.input-group input {
+    width: 100%;
+    padding: 12px 5px;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #ddd;
+    font-size: 1em;
+    background-color: transparent;
+    color: #ffffff;
+    transition: border-bottom-color 0.3s ease;
+}
 .login-container form {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Espaço entre os elementos do formulário */
+    gap: 20px;
+}
+
+.input-group input:focus {
+    outline: none; 
+}
+
+.login-button {
+    width: 100%;
+    background-color: #090912;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .input-group {
@@ -34,28 +54,9 @@
 .input-group label {
     display: block;
     margin-bottom: 5px;
+    margin-top: 5px;
     font-weight: 500;
-    color: #555;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-.login-button {
-    background-color: #007bff;
-    color: rgb(255, 255, 255);
-    border: none;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    color: #000000;
 }
 
 .login-button:hover {
@@ -77,5 +78,5 @@
 }
 
 .register-link {
-    color: #007bff;
+    color: #ffffff !important;
 }

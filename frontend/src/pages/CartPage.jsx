@@ -1,14 +1,15 @@
 import React from 'react';
 import { useCart } from '../contexts/useCart';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './CartPage.css';
 import { useAuth } from '../contexts/useAuth';
-    
+import BookList from '../components/BookList';
+
 function CartPage() {
     const { cart, removeItemFromCart, updateItemQuantity, createOrderFromCart, isLoading } = useCart();
     const { user, isAuthenticated } = useAuth();
     const navigate = useNavigate();
-    
+
     // Função de guarda para verificar se o usuário está logado antes de qualquer ação
     const ensureAuthenticated = () => {
         if (!isAuthenticated) {
@@ -29,7 +30,7 @@ function CartPage() {
     }
 
 
-      if (!cart || cart.items.length === 0) {
+    if (!cart || cart.items.length === 0) {
         return (
             <div className="cart-container">
                 <h2>Seu Carrinho de Compras</h2>
@@ -44,14 +45,14 @@ function CartPage() {
     }, 0);
 
     const handleRemoveFromCart = (itemId) => {
-      if (ensureAuthenticated()) {
+        if (ensureAuthenticated()) {
             removeItemFromCart(user.id, itemId);
         }
     };
 
 
     const handleIncreaseQuantity = (item) => {
-         if (ensureAuthenticated()) {
+        if (ensureAuthenticated()) {
             updateItemQuantity(user.id, item.id, item.quantity + 1);
         }
     };
@@ -63,22 +64,25 @@ function CartPage() {
     };
 
     const handleCheckout = async () => {
-      if (ensureAuthenticated()) {
+        if (ensureAuthenticated()) {
             const newOrder = await createOrderFromCart(user.id);
-        if (!user) {
-            alert('Você precisa estar logado para finalizar a compra.');
-            navigate('/login');
-            return;
+            if (!user) {
+                alert('Você precisa estar logado para finalizar a compra.');
+                navigate('/login');
+                return;
+            }
+            if (newOrder) {
+                navigate(`/order-confirmation/${newOrder.id}`);
+            }
         }
-        if (newOrder) {
-            navigate(`/order-confirmation/${newOrder.id}`);
-        }
-    }
     };
 
 
     return (
         <div className="cart-container">
+               <Link to={'/'} >
+                     <button className="home-button">Continuar Comprando</button>
+                </Link>
             <h2>Seu Carrinho de Compras</h2>
             <div className="cart-items-list">
                 {cart.items.map(item => (

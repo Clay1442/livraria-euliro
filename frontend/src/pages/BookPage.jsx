@@ -46,7 +46,7 @@ function BookPage() {
         <div className="book-page-container"> 
             <h1>{book.title}</h1>
             <h2>por {book.authors.map(author => author.name + ' ' + author.lastName).join(', ')}</h2>
-            <img src={book.imageUrl} alt={book.title} width="100"/> 
+            <img className='img-bookPage' src={book.imageUrl} alt={book.title} width="100"/> 
             <p><strong>Descrição:</strong> {book.description}</p>
             <p className="price"><strong>Preço:</strong> R$ {book.price.toFixed(2)}</p>
             <p><strong>Estoque:</strong> {book.stock} unidades</p>

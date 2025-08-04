@@ -1,14 +1,7 @@
-.register-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh; /* Faz a página ocupar quase toda a altura da tela */
-    background-color: #f4f4f4;
-}
-
 .register-container {
-    background-color: white;
+    background-color: #023f5dbb;
     padding: 40px;
+    margin: 118px auto 40px auto;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -18,7 +11,7 @@
 
 .register-container h1 {
     margin-bottom: 25px;
-    color: #333;
+    color: #000000;
 }
 
 .register-container form {
@@ -47,7 +40,7 @@
 }
 
 .register-button {
-    background-color: #007bff;
+    background-color: #090912;
     color: rgb(255, 255, 255);
     border: none;
     padding: 15px;

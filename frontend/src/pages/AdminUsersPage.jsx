@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom"; 
+import { toast } from 'react-toastify';
+import CustomConfirmModal from '../components/CustomConfirmModal';
+import { confirmAlert } from 'react-confirm-alert';
+import './AdminUsersPage.css';
 
 function AdminUsersPage() {
     const [users, setUsers] = useState([]);
@@ -20,45 +24,59 @@ function AdminUsersPage() {
     }, []);
 
     const handleDelete = async (userId) => {
-        if (window.confirm("Tem certeza que deseja desativar este usuário?")) {
-            try {
-                await axios.delete(`http://localhost:8080/users/${userId}`);
-                alert("Usuário desativado com sucesso!");
-                setUsers(users.filter(user => user.id !== userId));
-            } catch (error) {
-                console.error("Erro ao desativar usuario!", error);
-                alert("Não foi possível desativar o usuário.");
+        confirmAlert({ 
+            customUI: ({ onClose }) => {
+                return (
+                    <CustomConfirmModal
+                        title="Confirmar Exclusão"
+                        message="Tem certeza que deseja desativar este usuário? Esta ação não pode ser desfeita."
+                        onClose={onClose}
+                        onConfirm={async () => {
+                            try {
+                                await axios.delete(`http://localhost:8080/users/${userId}`);
+                                toast.success("Usuário desativado com sucesso!");
+                                setUsers(users.filter(user => user.id !== userId));
+                            } catch (error) {
+                                console.error("Erro ao desativar usuário!", error);
+                                toast.error(error.response?.data?.message || "Não foi possível desativar o usuário.");
+                            }
+                            onClose();
+                        }}
+                    />
+                );
             }
-        }
-    };
+        });
+    }
 
     if (loading) return <div>Carregando usuários...</div>;
 
-    return (
-        <div style={{ padding: '40px' }}>
-            <h1>Gerenciamento de Usuários</h1>
-            <table border="1" style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
+     return (
+        <div className="admin-page-container">
+            <div className="admin-page-header">
+                <h1>Gerenciamento de Usuários</h1>
+            </div>
+            <table className="admin-table">
                 <thead>
                     <tr>
-                        <th style={{padding: '8px'}}>ID</th>
-                        <th style={{padding: '8px'}}>Nome</th>
-                        <th style={{padding: '8px'}}>Email</th>
-                        <th style={{padding: '8px'}}>Papéis (Roles)</th>
-                        <th style={{padding: '8px'}}>Ações</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Papéis (Roles)</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map(user => (
                         <tr key={user.id}>
-                            <td style={{padding: '8px'}}>{user.id}</td>
-                            <td style={{padding: '8px'}}>{user.name}</td>
-                            <td style={{padding: '8px'}}>{user.email}</td>
-                            <td style={{padding: '8px'}}>{user.roles.join(', ')}</td>
-                            <td style={{padding: '8px'}}>
+                            <td>{user.id}</td>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.roles.join(', ')}</td>
+                            <td className="actions-cell">
                                 <Link to={`/admin/users/edit/${user.id}`}>
-                                    <button>Editar</button>
+                                    <button className="edit-button">Editar</button>
                                 </Link>
-                                <button onClick={() => handleDelete(user.id)}>Desativar</button>
+                                <button className="delete-button" onClick={() => handleDelete(user.id)}>Desativar</button>
                             </td>
                         </tr>
                     ))}

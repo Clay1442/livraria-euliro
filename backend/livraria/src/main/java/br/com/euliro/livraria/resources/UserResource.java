@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.euliro.livraria.dto.PasswordUpdateDTO;
 import br.com.euliro.livraria.dto.UpdateRolesDTO;
 import br.com.euliro.livraria.dto.UserCreateDTO;
 import br.com.euliro.livraria.dto.UserDTO;
@@ -81,5 +83,13 @@ public class UserResource {
 	    UserDTO updatedUserDto = service.updateRoles(id, dto);
 	    return ResponseEntity.ok().body(updatedUserDto);
 	}
+	
+
+	@PatchMapping(value = "/{id}/password")
+	public ResponseEntity<UserUpdateDTO> updatePassword(@PathVariable Long id, @RequestBody @Valid PasswordUpdateDTO dto) {
+		service.updatePassword(id, dto);
+        return ResponseEntity.noContent().build();
+	}
+	
 
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import axios from "axios";
 import './EditBookPage.css';
 
@@ -10,7 +11,7 @@ function EditBookPage() {
     const [allAuthors, setAllAuthors] = useState([]);
     const [currentStock, setCurrentStock] = useState(0);
     const [adjustmentQuantity, setAdjustmentQuantity] = useState(1);
-    const [formData, setFormData] = useState({
+    const [ formData, setFormData] = useState({
         title: '',
         description: '',
         price: '',
@@ -68,11 +69,11 @@ function EditBookPage() {
             }
             await Promise.all(updatePromises);
 
-            alert('Livro atualizado com sucesso!');
+            toast.success('Livro atualizado com sucesso!');
             navigate('/admin/books');
         } catch (error) {
             console.error("Erro ao atualizar o livro:", error);
-            alert('Falha ao atualizar o livro.');
+            toast.error('Falha ao atualizar o livro.');
         }
     };
 
@@ -81,10 +82,10 @@ function EditBookPage() {
         try {
             const response = await axios.patch(url, { quantity: adjustmentQuantity });
             setCurrentStock(response.data.stock);
-            alert(`Estoque atualizado com sucesso! Novo total: ${response.data.stock}`);
+            toast.success(`Estoque atualizado com sucesso! Novo total: ${response.data.stock}`);
         } catch (error) {
             console.error(`Erro ao ${action} estoque:`, error);
-            alert(`Falha ao atualizar o estoque.`);
+            toast.error(`Falha ao atualizar o estoque.`);
         }
     };
 
@@ -123,7 +124,7 @@ function EditBookPage() {
             </form>
 
 
-            <hr style={{ margin: '40px 0' }} />
+            <hr/>
             <div className="stock-management">
                 <h3>Gerenciar Estoque</h3>
                 <p>Estoque Atual: <strong>{currentStock}</strong></p>

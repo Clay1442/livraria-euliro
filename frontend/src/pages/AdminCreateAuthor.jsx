@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify';
 import './AdminCreateAuthor.css';
 
 function AdminCreateAuthor() {
@@ -24,11 +25,11 @@ function AdminCreateAuthor() {
                     lastName: formData.lastName
                 }
             );
-            alert('Autor criado com sucesso!');
+           toast.success('Autor criado com sucesso!');
             navigate('/admin/authors');
         } catch (error) {
             console.error("Erro ao criar autor:", error);
-            alert("Não foi possível criar o autor.");
+            toast.error("Não foi possível criar o autor.");
         }
     }
 
@@ -45,7 +46,7 @@ function AdminCreateAuthor() {
                     <label htmlFor="LastName">Sobrenome</label>
                     <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
                 </div>
-                <button type="submit" className="save-button">Salvar Todas as Alterações</button>
+                <button type="submit" className="save-button">Adicionar Autor</button>
             </form>
         </div>
     );

@@ -1,0 +1,25 @@
+.edit-author-page {
+    background-color: #023f5dbb;
+    max-width: 700px;
+    margin: 40px auto;  
+    padding: 30px;
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);    
+}
+
+.save-button {
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.save-button:hover {
+    background-color: #218838;
+}

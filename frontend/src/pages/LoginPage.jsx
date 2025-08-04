@@ -23,7 +23,6 @@ function LoginPage() {
     };
 
     return (
-        <div className="login-page">
             <div className="login-container">
                 <h1>Login</h1>
                 <form onSubmit={handleSubmit}>
@@ -51,7 +50,6 @@ function LoginPage() {
                 </form>
                 <p className="register-link">Ainda não tem conta? <Link to="/register">Cadastre-se aqui!</Link></p>
             </div>
-        </div>
     );
 }
 

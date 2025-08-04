@@ -1,0 +1,27 @@
+.order-history-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.orders-list {
+    max-height: 70vh;
+    overflow-y: auto; 
+    padding-right: 15px;
+    margin-top: 20px;
+}
+
+.order-card {
+    background-color: #023f5dbb;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.order-card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}

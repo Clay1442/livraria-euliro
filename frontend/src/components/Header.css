@@ -1,10 +1,15 @@
-/* src/components/Header.css */
-
 .main-header {
-    background-color: #333;
+    background-color: #090912;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     color: white;
-    padding: 15px 30px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    height: 80px; /* Ou a altura que preferir */
+    display: flex;
+    align-items: center;
+    z-index: 1000; /* Garante que o header fique sobre outros elementos */
 }
 
 .header-content {
@@ -21,7 +26,7 @@
 }
 
 .logo h1 {
-    margin: 0;
+    margin: 1;
     font-size: 1.8em;
 }
 
@@ -50,12 +55,10 @@
     border: 1px solid white;
 }
 
-/* ... estilos existentes ... */
-
 .main-nav {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espaço entre os links */
+    gap: 20px;
 }
 
 .main-nav a {
@@ -86,3 +89,5 @@
     background-color: white;
     color: #333;
 }
+
+

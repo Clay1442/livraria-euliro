@@ -25,6 +25,8 @@ import AdminEditAuthorPage from './pages/AdminEditAuthorPage.jsx';
 import AdminCreateAuthor from './pages/AdminCreateAuthor.jsx';
 import AdminUsersPage from './pages/AdminUsersPage.jsx';
 import AdminEditUserPage from './pages/AdminEditUserPage.jsx'
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

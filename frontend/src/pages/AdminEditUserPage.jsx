@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './AdminEditUserPage.css';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function AdminEditUserPage() {
@@ -37,84 +40,87 @@ function AdminEditUserPage() {
                 ? prev.roles.filter(r => r !== role)
                 : [...prev.roles, role];
             return { ...prev, roles: newRoles };
-    })};
+        })
+    };
 
 
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            try {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (formData.roles.length === 0) {
+            toast.error('Por favor, selecione pelo menos um papel para o usuário.');
+            return false;
+        }
+        try {
 
-                // DTO para atualizar dados básicos
-                const updateUserDTO = {
-                    name: formData.name,
-                    email: formData.email,
-                    birthDate: formData.birthDate
-                };
+            // DTO para atualizar dados básicos
+            const updateUserDTO = {
+                name: formData.name,
+                email: formData.email,
+                birthDate: formData.birthDate
+            };
 
-                // DTO para atualizar os papéis
-                const updateRolesDTO = {
-                    roles: formData.roles
-                };
+            // DTO para atualizar os papéis
+            const updateRolesDTO = {
+                roles: formData.roles
+            };
 
-                await Promise.all([
-                    axios.put(`http://localhost:8080/users/${id}`, updateUserDTO),
-                    axios.put(`http://localhost:8080/users/${id}/roles`, updateRolesDTO)
-                ]);
+            await Promise.all([
+                axios.put(`http://localhost:8080/users/${id}`, updateUserDTO),
+                axios.put(`http://localhost:8080/users/${id}/roles`, updateRolesDTO)
+            ]);
 
-                alert('Papéis do usuário atualizados com sucesso!');
-                navigate('/admin/users');
-            }
-            catch (error) {
-                console.error("Erro ao atualizar usuário:", error);
-                alert('Falha ao atualizar o usuário.');
-            }
-        };
+            toast.success('Papéis do usuário atualizados com sucesso!');
+            navigate('/admin/users');
+        }
+        catch (error) {
+            console.error("Erro ao atualizar usuário:", error);
+            toast.error('Falha ao atualizar o usuário.');
+        }
+    };
 
-        if (!formData.email) return <div>Carregando...</div>;
+    if (!formData.email) return <div>Carregando...</div>;
 
-        return (
-            <div style={{ padding: '40px' }}>
-                <h2> Editando Usuário: {formData.name}</h2>
-                <form onSubmit={handleSubmit}>
-                    <h3>Email e Senha do Usuário</h3>
-                    <div className="input-group">
-                        <label htmlFor="name">Nome Completo</label>
-                        <input id="name" name='name' type="text" value={formData.name} onChange={handleChange} required />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="email">Email</label>
-                        <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="birthDate">Data de Nascimento</label>
-                        <input id="birthDate" name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} required />
-                    </div>
+    return (
+        <div className="edit-user-page">
+            <h2>Editando Usuário: {formData.name}</h2>
+            <form onSubmit={handleSubmit} className="edit-user-form">
+                <h3>Dados Pessoais</h3>
+                <div className="input-groupEditUser">
+                    <label htmlFor="name">Nome Completo</label>
+                    <input id="name" name='name' type="text" value={formData.name} onChange={handleChange} required />
+                </div>
+                <div className="input-groupEditUser">
+                    <label htmlFor="email">Email</label>
+                    <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
+                </div>
+                <div className="input-groupEditUser">
+                    <label htmlFor="birthDate">Data de Nascimento</label>
+                    <input id="birthDate" name="birthDate" type="date" value={formData.birthDate || ''} onChange={handleChange} required />
+                </div>
 
-                    <h3>Papéis (Roles)</h3>
-                    <div>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={formData.roles.includes('ROLE_CLIENTE')}
-                                onChange={() => handleRoleChange('ROLE_CLIENTE')}
-                            />
-                            CLIENTE
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={formData.roles.includes('ROLE_ADMIN')}
-                                onChange={() => handleRoleChange('ROLE_ADMIN')}
-                            />
-                            ADMINISTRADOR
-                        </label>
-                    </div>
-                    <button type="submit" style={{ marginTop: '20px' }}>Salvar</button>
-                </form >
-            </div >
-        );
-    }
+                <h3>Papéis (Roles)</h3>
+                <div className="roles-container">
+                    <label className="role-label">
+                        <input
+                            type="checkbox"
+                            checked={formData.roles.includes('ROLE_CLIENTE')}
+                            onChange={() => handleRoleChange('ROLE_CLIENTE')}
+                        />
+                        CLIENTE
+                    </label>
+                    <label className="role-label">
+                        <input
+                            type="checkbox"
+                            checked={formData.roles.includes('ROLE_ADMIN')}
+                            onChange={() => handleRoleChange('ROLE_ADMIN')}
+                        />
+                        ADMINISTRADOR
+                    </label>
+                </div>
+                <button type="submit" className="save-button">Salvar Alterações</button>
+            </form >
+        </div >
+    );
+}
 
- export default AdminEditUserPage;
+export default AdminEditUserPage;

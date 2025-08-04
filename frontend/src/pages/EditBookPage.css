@@ -1,7 +1,10 @@
 .edit-book-page {
+    background-color: #023f5dbb;
     max-width: 700px;
     margin: 40px auto;
-    padding: 30px;
+    padding: 30px;  
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .edit-book-form {
     display: flex;
@@ -24,8 +27,8 @@
 }
 .save-button {
     padding: 15px;
-    background-color: #007bff;
-    color: rgb(71, 61, 61);
+    background-color: #090912;
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 4px;
     font-size: 1.1em;
@@ -43,8 +46,6 @@
     border: 1px solid #eee;
     border-radius: 8px;
 }
-
-
 
 .stock-management h3 {
     margin-top: 0;
@@ -64,13 +65,15 @@
 }
 
 .stock-adjustment-controls button {
+    background-color: #023f5dbb;
     padding: 8px 15px;
     cursor: pointer;
     border: 1px solid #ccc;
-    background-color: #f0f0f0;
+    font-weight: 500;
     border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
-.stock-adjustment-controls button{
-    background-color: #007bff;
+.stock-adjustment-controls button:hover {
+    background-color: #6991b9;
 }

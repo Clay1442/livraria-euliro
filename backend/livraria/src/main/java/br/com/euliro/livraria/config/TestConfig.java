@@ -54,9 +54,12 @@ public class TestConfig implements CommandLineRunner {
         userRepository.save(savedUser2); // Salva a mudança do papel no banco
         userRepository.save(savedUser1); // Salva a mudança do papel no banco
         
-        Book book1 = new Book(null, "The Lord of the Rings", "A jornada...", new BigDecimal("150.00"), 20, "https://m.media-amazon.com/images/I/71ZLavBjpRL._SY425_.jpg");
-        Book book2 = new Book(null, "Harry Potter", "O início da saga...", new BigDecimal("50.00"), 30, "https://rocco.com.br/wp-content/uploads/2022/12/9788532511010.jpg");
-        Book book3 = new Book(null, "The Hobbit", "A aventura...", new BigDecimal("70.00"), 15, "https://m.media-amazon.com/images/I/519AfthmOLL._ControlCacheEqualizer_.jpg");
+        Book book1 = new Book(null, "The Lord of the Rings", "Numa cidadezinha indolente do Condado, um jovem hobbit é encarregado de uma imensa tarefa. Deve empreender uma perigosa viagem através da Terra-média até as Fendas da Perdição, e lá destruir o Anel do Poder - a única coisa que impede o domínio maléfico do Senhor do Escuro."
+        		+ "", new BigDecimal("150.00"), 20, "https://m.media-amazon.com/images/I/71ZLavBjpRL._SY425_.jpg");
+        Book book2 = new Book(null, "Harry Potter", "Descobre sua verdadeira história e seu destino: ser um aprendiz de feiticeiro até o dia em que terá que enfrentar a pior força do mal, o homem que assassinou seus pais. O menino de olhos verde, magricela e desengonçado, tão habituado à rejeição, descobre, também, que é um herói no universo dos magos."
+        		+ "", new BigDecimal("50.00"), 30, "https://rocco.com.br/wp-content/uploads/2022/12/9788532511010.jpg");
+        Book book3 = new Book(null, "The Hobbit", "Bilbo Bolseiro era um dos mais respeitáveis hobbits de todo o Condado até que, um dia, o mago Gandalf bate à sua porta. A partir de então, toda sua vida pacata e campestre soprando anéis de fumaça com seu belo cachimbo começa a mudar. Ele é convocado a participar de uma aventura por ninguém menos do que Thorin Escudo-de-Carvalho, um príncipe do poderoso povo dos Anãos."
+        		+ "", new BigDecimal("70.00"), 15, "https://m.media-amazon.com/images/I/519AfthmOLL._ControlCacheEqualizer_.jpg");
         
         book1.addAuthor(author2);
         book2.addAuthor(author2);

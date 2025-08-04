@@ -1,7 +1,10 @@
 .cart-container {
     max-width: 900px;
-    margin: 40px auto;
+    background-color:  #023f5dbb;
     padding: 20px;
+    display: flex;             
+    flex-direction: column;    
+    height: 70vh;              
 }
 
 .cart-item {
@@ -56,3 +59,9 @@
 .checkout-button:hover {
     background-color: #218838;
 }
+.cart-items-list {
+    max-height: 400px;
+    overflow-y: auto;  
+    padding-right: 10px; 
+}
+

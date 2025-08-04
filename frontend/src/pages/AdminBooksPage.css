@@ -1,0 +1,95 @@
+.admin-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+}
+
+.admin-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.admin-page-header h1 {
+    margin: 0;
+}
+
+.add-new-button {
+    background-color: #023f5dbb;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-new-button:hover {
+    background-color: #6991b9;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #023f5dbb;
+}
+
+.admin-table th, .admin-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.admin-table thead {
+    background-color: #090912;
+}
+
+.admin-table th {
+    font-weight: 600;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #6991b9;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 10px;
+}
+
+.actions-cell button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #090912;
+}
+
+.actions-cell .edit-button:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.actions-cell .delete-button:hover {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+
+.table-container {
+    overflow-x: auto; /* Adiciona rolagem horizontal SE necessário */
+    width: 100%;
+}
+
+.admin-table {
+    width: 100%;
+    min-width: 700px; /* Força a tabela a ter uma largura mínima */
+    /* ... resto do seu estilo de tabela ... */
+}
