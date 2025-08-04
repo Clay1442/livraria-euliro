@@ -18,7 +18,7 @@ import br.com.euliro.livraria.repositories.*;
 import br.com.euliro.livraria.services.UserService;
 
 @Configuration
-@Profile("test")
+@Profile("prod")
 public class TestConfig implements CommandLineRunner {
 
 
