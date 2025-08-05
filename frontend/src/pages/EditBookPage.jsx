@@ -20,8 +20,8 @@ function EditBookPage() {
     });
 
     useEffect(() => {
-        const fetchBookData = axios.get(`http://localhost:8080/books/${id}`);
-        const fetchAuthorsData = axios.get('http://localhost:8080/authors');
+        const fetchBookData = axios.get(`${import.meta.env.VITE_API_BASE_URL}/books/${id}`);
+        const fetchAuthorsData = axios.get(`${import.meta.env.VITE_API_BASE_URL}/authors`);
 
         Promise.all([fetchBookData, fetchAuthorsData])
             .then(([bookResponse, authorsResponse]) => {
@@ -54,7 +54,7 @@ function EditBookPage() {
 
             // Atualiza título e descrição e o autor
             updatePromises.push(
-                axios.put(`http://localhost:8080/books/${id}`, {
+                axios.put(`${import.meta.env.VITE_API_BASE_URL}/books/${id}`, {
                     title: formData.title,
                     description: formData.description,
                     authorIds: formData.authorIds
@@ -64,7 +64,7 @@ function EditBookPage() {
             // atualiza o preço se ele tiver mudado
             if (formData.price !== originalData.price) {
                 updatePromises.push(
-                    axios.patch(`http://localhost:8080/books/${id}/price`, { price : formData.price })
+                    axios.patch(`${import.meta.env.VITE_API_BASE_URL}/books/${id}/price`, { price : formData.price })
                 );
             }
             await Promise.all(updatePromises);
@@ -78,7 +78,7 @@ function EditBookPage() {
     };
 
     const handleStockUpdate = async (action) => {
-        const url = `http://localhost:8080/books/${id}/stock${action === 'remove' ? '/remove' : ''}`;
+        const url = `${import.meta.env.VITE_API_BASE_URL}/books/${id}/stock${action === 'remove' ? '/remove' : ''}`;
         try {
             const response = await axios.patch(url, { quantity: adjustmentQuantity });
             setCurrentStock(response.data.stock);

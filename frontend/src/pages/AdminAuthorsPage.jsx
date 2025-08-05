@@ -10,7 +10,7 @@ function AdminAuthorsPage() {
     const [authors, setAuthors] = useState([]);
 
     const fetchAuthors = () => {
-        axios.get('http://localhost:8080/authors')
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/authors`)
             .then(response => {
                 setAuthors(response.data);
             })
@@ -32,7 +32,7 @@ function AdminAuthorsPage() {
                         onClose={onClose}
                         onConfirm={async () => {
                             try {
-                                await axios.delete(`http://localhost:8080/authors/${authorId}`);
+                                await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/authors/${authorId}`);
                                 toast.success("Autor desativado com sucesso!");
                                 setAuthors(authors.filter(author => author.id !== authorId));
                             } catch (error) {

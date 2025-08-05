@@ -16,7 +16,7 @@ function BookPage() {
     const { addItemToCart } = useCart();
 
     useEffect(() => {
-        const apiUrl = `http://localhost:8080/books/${id}`;
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/books/${id}`;
         axios.get(apiUrl)
             .then(response => {
                 setBook(response.data);

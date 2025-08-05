@@ -21,7 +21,7 @@ function RegisterPage() {
         };
 
         try {
-            await axios.post('http://localhost:8080/users', userCreatDTO);
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, userCreatDTO);
 
             alert("Usuário cadastrado com sucesso!");
             navigate('/login');

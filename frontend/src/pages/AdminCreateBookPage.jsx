@@ -17,7 +17,7 @@ const [formData, setFormData] = useState({
 });
 
    useEffect(() => {
-       axios.get('http://localhost:8080/authors')
+       axios.get(`${import.meta.env.VITE_API_BASE_URL}/authors`)
               .then(response => {
                 setAllAuthors(response.data);
               })
@@ -38,7 +38,7 @@ const [formData, setFormData] = useState({
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8080/books', formData);
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/books`, formData);
             alert('Livro criado com sucesso!');
             navigate('/admin/books');
         }catch (error) {

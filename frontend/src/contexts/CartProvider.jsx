@@ -25,7 +25,7 @@ export function CartProvider({ children }) {
 
     const fetchCart = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/carts/users/${userId}`);
+            const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/carts/users/${userId}`);
             setCart(response.data);
             return response.data;
         } catch (error) {
@@ -35,7 +35,7 @@ export function CartProvider({ children }) {
 
     const addItemToCart = async (userId, bookId, quantity) => {
         try {
-            const response = await axios.post(`http://localhost:8080/carts/${userId}/items`, {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/carts/${userId}/items`, {
                 bookId,
                 quantity
             });
@@ -49,7 +49,7 @@ export function CartProvider({ children }) {
 
     const removeItemFromCart = async (userId, itemId) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/carts/${userId}/items/${itemId}`);
+            const response = await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/carts/${userId}/items/${itemId}`);
             setCart(response.data);
             alert('Item removido do carrinho!');
         } catch (error) {
@@ -60,7 +60,7 @@ export function CartProvider({ children }) {
 
     const updateItemQuantity = async (userId, itemId, quantity) => {
         try {
-            const response = await axios.patch(`http://localhost:8080/carts/user/${userId}/items/${itemId}`, {
+            const response = await axios.patch(`${import.meta.env.VITE_API_BASE_URL}/carts/user/${userId}/items/${itemId}`, {
                 quantity // Envia o JSON { "quantity": X }
             });
             setCart(response.data); // Atualiza o estado com o carrinho retornado
@@ -73,7 +73,7 @@ export function CartProvider({ children }) {
 
     const createOrderFromCart = async (userId) => {
         try {
-            const response = await axios.post(`http://localhost:8080/orders/from-cart/user/${userId}`);
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/orders/from-cart/user/${userId}`);
 
             fetchCart(userId);
             alert('Pedido criado com sucesso!');

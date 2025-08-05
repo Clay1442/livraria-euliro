@@ -11,7 +11,7 @@ function AdminBooksPage() {
     const [books, setBooks] = useState([]);
 
     const fetchBooks = () => {
-        axios.get('http://localhost:8080/books')
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/books`)
             .then(response => {
                 setBooks(response.data);
             })
@@ -35,7 +35,7 @@ function AdminBooksPage() {
                 onClose={onClose}
                 onConfirm={async () => {
                   try {
-                    await axios.delete(`http://localhost:8080/books/${bookId}`);
+                    await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/books/${bookId}`);
                     toast.success("Livro deletado com sucesso!");
                     setBooks(books.filter(book => book.id !== bookId));
                   } catch (error) {

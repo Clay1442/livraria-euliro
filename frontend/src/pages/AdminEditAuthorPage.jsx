@@ -13,7 +13,7 @@ function AdminEditAuthorPage() {
     });
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/authors/${id}`).
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/authors/${id}`).
             then(response => {
                 setOriginalData(response.data);
                 setFormData(response.data);
@@ -23,7 +23,7 @@ function AdminEditAuthorPage() {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
          try {
-           await axios.put(`http://localhost:8080/authors/${id}`, formData);
+           await axios.put(`${import.meta.env.VITE_API_BASE_URL}/authors/${id}`, formData);
                     alert('Autor atualizado com sucesso!');
                     navigate('/admin/authors');
          } catch (error) {

@@ -7,7 +7,7 @@ function OrderHistoryPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/orders/my-orders')
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/orders/my-orders`)
             .then(response => {
                 setOrders(response.data);
                 setLoading(false);

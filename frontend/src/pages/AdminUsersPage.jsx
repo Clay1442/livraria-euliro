@@ -11,7 +11,7 @@ function AdminUsersPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/users')
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/users`)
             .then(response => {
                 setUsers(response.data);
                 setLoading(false);
@@ -33,7 +33,7 @@ function AdminUsersPage() {
                         onClose={onClose}
                         onConfirm={async () => {
                             try {
-                                await axios.delete(`http://localhost:8080/users/${userId}`);
+                                await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/users/${userId}`);
                                 toast.success("Usuário desativado com sucesso!");
                                 setUsers(users.filter(user => user.id !== userId));
                             } catch (error) {
