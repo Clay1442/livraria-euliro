@@ -8,13 +8,17 @@ import { confirmAlert } from 'react-confirm-alert';
 
 function AdminAuthorsPage() {
     const [authors, setAuthors] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const fetchAuthors = () => {
-        axios.get('http://localhost:8080/authors')
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/authors`)
             .then(response => {
                 setAuthors(response.data);
+                setLoading(false);
             })
             .catch(error => console.error("Erro ao buscar a Lista de Autores!", error));
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -22,7 +26,7 @@ function AdminAuthorsPage() {
     }, []);
 
 
-     const handleDelete = (authorId) => {
+    const handleDelete = (authorId) => {
         confirmAlert({
             customUI: ({ onClose }) => {
                 return (
@@ -32,7 +36,7 @@ function AdminAuthorsPage() {
                         onClose={onClose}
                         onConfirm={async () => {
                             try {
-                                await axios.delete(`http://localhost:8080/authors/${authorId}`);
+                                await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/authors/${authorId}`);
                                 toast.success("Autor desativado com sucesso!");
                                 setAuthors(authors.filter(author => author.id !== authorId));
                             } catch (error) {
@@ -47,6 +51,12 @@ function AdminAuthorsPage() {
         });
     };
 
+    const filteredAuthors = authors.filter(author =>
+        (author.name + ' ' + author.lastName).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (loading) return <div>Carregando autores...</div>;
+
     return (
         <div className="admin-page-container">
             <h1>Gerenciamento de Autores</h1>
@@ -55,6 +65,17 @@ function AdminAuthorsPage() {
                     + Adicionar Novo Autor
                 </Link>
             </div>
+
+            <div className="search-bar-container">
+                <input
+                    type="text"
+                    placeholder="Pesquisar por Nome..."
+                    className="search-input"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                />
+            </div>
+
             <table className="admin-table">
                 <thead>
                     <tr>
@@ -64,7 +85,7 @@ function AdminAuthorsPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {authors.map(author => (
+                    {filteredAuthors.map(author => (
                         <tr key={author.id}>
                             <td>{author.id}</td>
                             <td>{author.name + ' ' + author.lastName}</td>

@@ -19,7 +19,7 @@ function AdminCreateAuthor() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8080/authors',
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/authors`,
                 {
                     name: formData.name,
                     lastName: formData.lastName

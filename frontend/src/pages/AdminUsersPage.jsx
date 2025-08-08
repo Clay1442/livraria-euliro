@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
 import CustomConfirmModal from '../components/CustomConfirmModal';
 import { confirmAlert } from 'react-confirm-alert';
@@ -8,10 +8,11 @@ import './AdminUsersPage.css';
 
 function AdminUsersPage() {
     const [users, setUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/users')
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/users`)
             .then(response => {
                 setUsers(response.data);
                 setLoading(false);
@@ -24,7 +25,7 @@ function AdminUsersPage() {
     }, []);
 
     const handleDelete = async (userId) => {
-        confirmAlert({ 
+        confirmAlert({
             customUI: ({ onClose }) => {
                 return (
                     <CustomConfirmModal
@@ -33,7 +34,7 @@ function AdminUsersPage() {
                         onClose={onClose}
                         onConfirm={async () => {
                             try {
-                                await axios.delete(`http://localhost:8080/users/${userId}`);
+                                await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/users/${userId}`);
                                 toast.success("Usuário desativado com sucesso!");
                                 setUsers(users.filter(user => user.id !== userId));
                             } catch (error) {
@@ -48,30 +49,46 @@ function AdminUsersPage() {
         });
     }
 
+    const filteredUsers = users.filter(user =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     if (loading) return <div>Carregando usuários...</div>;
 
-     return (
+    return (
         <div className="admin-page-container">
             <div className="admin-page-header">
                 <h1>Gerenciamento de Usuários</h1>
             </div>
+
+            <div className="search-bar-container">
+                <input
+                    type="text"
+                    placeholder="Pesquisar por Nome..."
+                    className="search-input"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                />
+            </div>
+
             <table className="admin-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
+                        <th className="hide-on-mobile">ID</th>
+                        <th className="hide-on-mobile">Nome</th>
                         <th>Email</th>
                         <th>Papéis (Roles)</th>
-                        <th>Ações</th>
+                        <th >Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
+                    {filteredUsers.map(user => (
                         <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.roles.join(', ')}</td>
+                            <td className="hide-on-mobile">{user.id}</td>
+                            <td className="hide-on-mobile">{user.name}</td>
+                            <td data-label="Email">{user.email}</td>
+                            <td data-label="Papéis">{user.roles.join(', ')}</td>
                             <td className="actions-cell">
                                 <Link to={`/admin/users/edit/${user.id}`}>
                                     <button className="edit-button">Editar</button>

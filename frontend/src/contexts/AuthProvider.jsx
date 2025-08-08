@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
@@ -22,7 +23,7 @@ export function AuthProvider({ children }) {
             if (storedToken) {
                 try {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-                    const response = await axios.get('http://localhost:8080/users/me');
+                    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users/me`);
                     setUser(response.data);
                     setToken(storedToken);
                 } catch (error) {
@@ -37,20 +38,20 @@ export function AuthProvider({ children }) {
 
     const login = async (email, password) => {
         try {
-            const response = await axios.post('http://localhost:8080/auth/login', { email, password });
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, { email, password });
             const newToken = response.data.token;
             
             localStorage.setItem('authToken', newToken);
             axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
             setToken(newToken);
 
-            const userResponse = await axios.get('http://localhost:8080/users/me');
+            const userResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users/me`);
             setUser(userResponse.data);
             
              return userResponse.data;
         } catch (error) {
             console.error("Erro no login:", error);
-            alert('Email ou senha inválidos.');
+            toast.error('Email ou senha inválidos.');
             return false;
         }
     };

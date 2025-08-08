@@ -30,7 +30,7 @@ function MyAccountPage() {
         try {
             // 2. Chama a API do backend
             const passwordUpdateDTO = { oldPassword, newPassword };
-            await axios.patch(`http://localhost:8080/users/${user.id}/password`, passwordUpdateDTO);
+            await axios.patch(`${import.meta.env.VITE_API_BASE_URL}/users/${user.id}/password`, passwordUpdateDTO);
 
             setSuccess('Senha alterada com sucesso! Recomendamos que você faça o login novamente.');
 

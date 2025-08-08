@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify';
 import './AdminCreateBookPage.css';
 
 
@@ -17,7 +18,7 @@ const [formData, setFormData] = useState({
 });
 
    useEffect(() => {
-       axios.get('http://localhost:8080/authors')
+       axios.get(`${import.meta.env.VITE_API_BASE_URL}/authors`)
               .then(response => {
                 setAllAuthors(response.data);
               })
@@ -38,12 +39,12 @@ const [formData, setFormData] = useState({
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8080/books', formData);
-            alert('Livro criado com sucesso!');
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/books`, formData);
+            toast.success('Livro criado com sucesso!');
             navigate('/admin/books');
         }catch (error) {
             console.error("Erro ao criar livro:", error);
-            alert("Não foi possível criar o livro.");
+            toast.error("Não foi possível criar o livro.");
         }
 
     }

@@ -7,7 +7,7 @@ function BookList() {
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
-        const apiUrl = 'http://localhost:8080/books';
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/books`;
         axios.get(apiUrl)
             .then(response => {
                 setBooks(response.data);

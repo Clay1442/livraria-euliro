@@ -17,7 +17,7 @@ function AdminEditUserPage() {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/users/${id}`)
+        axios.get(`${import.meta.env.VITE_API_BASE_URL}/users/${id}`)
             .then(response => {
                 setFormData({
                     name: response.data.name,
@@ -65,8 +65,8 @@ function AdminEditUserPage() {
             };
 
             await Promise.all([
-                axios.put(`http://localhost:8080/users/${id}`, updateUserDTO),
-                axios.put(`http://localhost:8080/users/${id}/roles`, updateRolesDTO)
+                axios.put(`${import.meta.env.VITE_API_BASE_URL}/users/${id}`, updateUserDTO),
+                axios.put(`${import.meta.env.VITE_API_BASE_URL}/users/${id}/roles`, updateRolesDTO)
             ]);
 
             toast.success('Papéis do usuário atualizados com sucesso!');
