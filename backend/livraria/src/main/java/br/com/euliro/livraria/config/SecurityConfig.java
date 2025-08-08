@@ -40,6 +40,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.GET, "/books").permitAll()
 						.requestMatchers(HttpMethod.GET, "/books/**").permitAll()
 						.requestMatchers("/h2-console/**").permitAll()
+						
 
 						// Qualquer usuário LOGADO pode ver seus próprios pedidos
 						.requestMatchers("/orders/**").authenticated()

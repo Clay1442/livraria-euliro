@@ -41,6 +41,7 @@ const [formData, setFormData] = useState({
         try {
             await axios.post(`${import.meta.env.VITE_API_BASE_URL}/books`, formData);
             toast.success('Livro criado com sucesso!');
+
             navigate('/admin/books');
         }catch (error) {
             console.error("Erro ao criar livro:", error);

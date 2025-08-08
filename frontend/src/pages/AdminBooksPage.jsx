@@ -27,6 +27,7 @@ function AdminBooksPage() {
     }, []);
 
 
+
     const handleDelete = (bookId) => {
         confirmAlert({
             title: 'Confirmar Exclusão',
@@ -60,6 +61,7 @@ function AdminBooksPage() {
     );
 
     if (loading) return <div>Carregando livros...</div>;
+
 
     return (
         <div className="table-container">
