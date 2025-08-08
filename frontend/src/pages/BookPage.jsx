@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/useAuth';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { useCart } from '../contexts/useCart';
 import './BookPage.css';
 
@@ -33,7 +34,7 @@ function BookPage() {
             const quantity = 1;
             addItemToCart(user.id, book.id, quantity);
         } else {
-            alert('você precisa estar logado para adicionar livros ao carrinho.');
+            toast.error('você precisa estar logado para adicionar livros ao carrinho.');
         }
     };
 

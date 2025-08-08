@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
@@ -50,7 +51,7 @@ export function AuthProvider({ children }) {
              return userResponse.data;
         } catch (error) {
             console.error("Erro no login:", error);
-            alert('Email ou senha inválidos.');
+            toast.error('Email ou senha inválidos.');
             return false;
         }
     };

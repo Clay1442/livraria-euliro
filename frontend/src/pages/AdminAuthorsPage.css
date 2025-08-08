@@ -81,3 +81,35 @@
     color: white;
     border-color: #dc3545;
 }
+
+
+
+@media (max-width: 768px) {
+
+    .admin-table {
+        min-width: 0;
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .actions-cell {
+        width: 39%;
+    }
+
+    h1 {
+        font-size: 2.2em;
+        line-height: 1.1;
+        margin-right: 9%;
+    }
+
+    body {
+        display: block;
+    }
+
+}
