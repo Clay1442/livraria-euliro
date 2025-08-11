@@ -7,6 +7,7 @@
     width: 100%;
     max-width: 400px; /* Limita a largura do formulário */
     text-align: center;
+    box-sizing: border-box;
 }
 
 .register-container h1 {
@@ -71,4 +72,16 @@
 
 .register-link {
     color: #007bff;
+}
+
+/* Para telas pequenas (celulares) - até 600px de largura */
+@media (max-width: 480px) {
+ .login-container {
+    padding: 25px;  
+ }
+
+ .login-container h1 {
+    font-size: 1.8em; 
+ }
+
 }

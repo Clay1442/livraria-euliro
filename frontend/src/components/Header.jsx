@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../contexts/useCart'; // Importa nosso hook do carrinho
+import { useCart } from '../contexts/useCart'; 
 import { useAuth } from '../contexts/useAuth';
 import './Header.css';
 
 function Header() {
     // Acessamos o estado do carrinho usando nosso hook
     const { cart } = useCart();
-    const { isAuthenticated, logout, hasRole } = useAuth(); // 2. Pegar o estado e a função do AuthContext
+    const { isAuthenticated, logout, hasRole } = useAuth(); 
     const navigate = useNavigate();
 
-    // Calculamos o número total de itens no carrinho
-    // Usamos .reduce() para somar a 'quantity' de cada item
+    // total de itens no carrinho
     const itemCount = cart ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0;
 
     const handleLogout = () => {

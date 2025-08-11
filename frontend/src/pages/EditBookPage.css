@@ -2,29 +2,35 @@
     background-color: #023f5dbb;
     max-width: 700px;
     margin: 40px auto;
-    padding: 30px;  
+    padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
+
 .edit-book-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
+
 .form-group {
     display: flex;
     flex-direction: column;
 }
+
 .form-group label {
     margin-bottom: 5px;
     font-weight: bold;
 }
-.form-group input, .form-group textarea {
+
+.form-group input,
+.form-group textarea {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1em;
 }
+
 .save-button {
     padding: 15px;
     background-color: #090912;
@@ -34,6 +40,7 @@
     font-size: 1.1em;
     cursor: pointer;
 }
+
 .save-button:hover {
     background-color: #0056b3;
 }
@@ -47,6 +54,11 @@
     border-radius: 8px;
 }
 
+.stock-management .button-stock {
+    display: flex;
+    gap: 10px;
+}
+
 .stock-management h3 {
     margin-top: 0;
 }
@@ -56,6 +68,7 @@
     align-items: center;
     gap: 10px;
     margin-top: 15px;
+    box-sizing: border-box;
 }
 
 .stock-adjustment-controls input {
@@ -76,4 +89,32 @@
 
 .stock-adjustment-controls button:hover {
     background-color: #6991b9;
+}
+
+@media (max-width: 780px) {
+    .edit-book-page {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .save-button {
+        font-size: 1em;
+        padding: 12px;
+    }
+
+    .stock-management {
+        margin-top: 0px;
+        padding: 50px;
+        border: none;
+        border-radius: 8px;
+        display: contents;
+    }
+
+    .stock-adjustment-controls .button-stock {
+        margin: 9px;
+    }
+
+    .stock-adjustment-controls {
+        display: block;
+    }
 }

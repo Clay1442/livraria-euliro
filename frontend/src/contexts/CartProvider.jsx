@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { CartContext } from './CartContext';
 import { useAuth } from './useAuth';
 
@@ -40,10 +41,10 @@ export function CartProvider({ children }) {
                 quantity
             });
             setCart(response.data);
-            alert('Livro adicionado ao carrinho!');
+            toast.success('Livro adicionado ao carrinho!');
         } catch (error) {
             console.error("Erro ao adicionar item ao carrinho:", error);
-            alert('Não foi possível adicionar o livro ao carrinho.');
+            toast.error('Não foi possível adicionar o livro ao carrinho.');
         }
     };
 
@@ -51,10 +52,10 @@ export function CartProvider({ children }) {
         try {
             const response = await axios.delete(`http://localhost:8080/carts/${userId}/items/${itemId}`);
             setCart(response.data);
-            alert('Item removido do carrinho!');
+            toast.success('Item removido do carrinho!');
         } catch (error) {
             console.error("Erro ao remover item do carrinho:", error);
-            alert('Não foi possível remover o item do carrinho.');
+            toast.error('Não foi possível remover o item do carrinho.');
         }
     };
 
@@ -66,7 +67,7 @@ export function CartProvider({ children }) {
             setCart(response.data); // Atualiza o estado com o carrinho retornado
         } catch (error) {
             console.error("Erro ao atualizar a quantidade:", error);
-            alert('Não foi possível atualizar a quantidade.');
+             toast.error('Não foi possível atualizar a quantidade.');
         }
     };
 
@@ -76,11 +77,11 @@ export function CartProvider({ children }) {
             const response = await axios.post(`http://localhost:8080/orders/from-cart/user/${userId}`);
 
             fetchCart(userId);
-            alert('Pedido criado com sucesso!');
+            toast.success('Pedido criado com sucesso!');
             return response.data;
         } catch (error) {
             console.error("Erro ao finalizar a compra:", error);
-            alert('Não foi possível finalizar a compra');
+             toast.error('Não foi possível finalizar a compra');
             return null;
         }
     };

@@ -28,26 +28,22 @@ public class SecurityFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		//
 		var token = this.recoverToken(request);
 
 		if (token != null) {
-			// 2. Se um token foi enviado, valida-o
+			//Se um token foi enviado, valida-o
 			var email = tokenService.validateToken(token);
 
 			if (!email.isEmpty()) {
-				// 3. Se o token for válido, busca o usuário no banco
 				UserDetails user = userRepository.findByEmail(email)
 						.orElseThrow(() -> new RuntimeException("Usuário não encontrado no filtro de segurança"));
 
-				// 4. Cria um objeto de autenticação e o coloca no contexto de segurança do
-				// Spring
+			
 				var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}
 
-		// 5. Continua a cadeia de filtros
 		filterChain.doFilter(request, response);
 	}
 

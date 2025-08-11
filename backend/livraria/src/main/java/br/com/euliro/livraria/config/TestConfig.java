@@ -17,7 +17,7 @@
 //import br.com.euliro.livraria.services.UserService;
 //
 //@Configuration
-//@Profile("prod")
+//@Profile("test")
 //public class TestConfig implements CommandLineRunner {
 //
 //
@@ -42,7 +42,7 @@
 //        authorRepository.saveAll(Arrays.asList(author1, author2, author3));
 //
 //        User user1 = new User(null, "João Silva", "joao@gmail.com", "123456", LocalDate.parse("1990-05-15"));
-//        User user2 = new User(null, "Ana Costa", "ana@gmail.com", "654321", LocalDate.parse("1988-11-20"));
+//        User user2 = new User(null, "euliro", "euliro@gmail.com", "654321", LocalDate.parse("1988-11-20"));
 //        UserCreateDTO dtoUser1 = new UserCreateDTO(user1);
 //        UserCreateDTO dtoUser2 = new UserCreateDTO(user2);
 //        User savedUser1 = userService.create(dtoUser1);

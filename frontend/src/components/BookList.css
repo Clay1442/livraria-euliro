@@ -54,16 +54,15 @@
     font-size: 13px !important;  
 }
 
-/* --- MEDIA QUERIES --- */
 
-/* Para telas médias (tablets) - até 900px de largura */
+
 @media (max-width: 900px) {
     .book-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Para telas pequenas (celulares) - até 600px de largura */
+
 @media (max-width: 600px) {
     .book-grid {
         grid-template-columns: 1fr;

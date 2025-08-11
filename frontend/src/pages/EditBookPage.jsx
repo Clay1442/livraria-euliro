@@ -125,9 +125,9 @@ function EditBookPage() {
 
 
             <hr/>
-            <div className="stock-management">
                 <h3>Gerenciar Estoque</h3>
                 <p>Estoque Atual: <strong>{currentStock}</strong></p>
+            <div className="stock-management">
                 <div className="stock-adjustment-controls">
                     <label htmlFor="adjustment">Quantidade:</label>
                     <input
@@ -137,8 +137,10 @@ function EditBookPage() {
                         value={adjustmentQuantity}
                         onChange={(e) => setAdjustmentQuantity(Number(e.target.value))}
                     />
-                    <button type="button" onClick={() => handleStockUpdate('add')}>+ Adicionar</button>
-                    <button type="button" onClick={() => handleStockUpdate('remove')}>- Remover</button>
+                    <div className="button-stock">
+                    <button  type="button" onClick={() => handleStockUpdate('add')}>+ Adicionar</button>
+                    <button   type="button" onClick={() => handleStockUpdate('remove')}>- Remover</button>
+                    </div>
                 </div>
             </div>
         </div>

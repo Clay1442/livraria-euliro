@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify';
 import './AdminCreateBookPage.css';
 
 
@@ -39,11 +40,11 @@ const [formData, setFormData] = useState({
         e.preventDefault();
         try {
             await axios.post('http://localhost:8080/books', formData);
-            alert('Livro criado com sucesso!');
+            toast.success('Livro criado com sucesso!');
             navigate('/admin/books');
         }catch (error) {
             console.error("Erro ao criar livro:", error);
-            alert("Não foi possível criar o livro.");
+            toast.error("Não foi possível criar o livro.");
         }
 
     }

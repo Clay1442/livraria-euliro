@@ -5,11 +5,11 @@
     left: 0;
     width: 100%;
     color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    height: 80px; /* Ou a altura que preferir */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    height: 80px;
     display: flex;
     align-items: center;
-    z-index: 1000; /* Garante que o header fique sobre outros elementos */
+    z-index: 1000;
 }
 
 .header-content {
@@ -90,4 +90,18 @@
     color: #333;
 }
 
+@media (max-width: 768px) {
 
+    .cart-count {
+        margin-right: 12px;
+    }
+
+    .cart-icon {
+        margin-right: 12px;
+    }
+
+    .logout-button {
+        margin-right: 20px;
+    }
+
+}

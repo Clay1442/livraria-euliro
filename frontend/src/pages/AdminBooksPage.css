@@ -2,6 +2,7 @@
     max-width: 1200px;
     margin: 40px auto;
     padding: 30px;
+    box-sizing: border-box;
 }
 
 .admin-page-header {
@@ -32,14 +33,22 @@
     background-color: #6991b9;
 }
 
+
+.table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
 .admin-table {
     width: 100%;
     border-collapse: collapse;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background-color: #023f5dbb;
+    min-width: 700px;
 }
 
-.admin-table th, .admin-table td {
+.admin-table th,
+.admin-table td {
     border: 1px solid #ddd;
     padding: 12px 15px;
     text-align: left;
@@ -51,10 +60,6 @@
 
 .admin-table th {
     font-weight: 600;
-}
-
-.admin-table tbody tr:hover {
-    background-color: #6991b9;
 }
 
 .actions-cell {
@@ -82,14 +87,53 @@
     border-color: #dc3545;
 }
 
-
-.table-container {
-    overflow-x: auto; /* Adiciona rolagem horizontal SE necessário */
-    width: 100%;
+.search-bar-container {
+    margin-bottom: 20px;
 }
 
-.admin-table {
-    width: 100%;
-    min-width: 700px; /* Força a tabela a ter uma largura mínima */
-    /* ... resto do seu estilo de tabela ... */
+.search-input {
+    width: 95%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+
+@media (max-width: 768px) {
+
+    .admin-table {
+        min-width: 0;
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .actions-cell {
+        width: 39%;
+    }
+
+    h1 {
+        font-size: 2.2em;
+        line-height: 1.1;
+        margin-right: 9%;
+    }
+
+    body {
+        display: block;
+    }
+
+    .search-input {
+    width: 88%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
 }

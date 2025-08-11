@@ -39,8 +39,9 @@
     background-color: #023f5dbb;
 }
 
-.admin-table th, .admin-table td {
-    border: 1px solid #ddd;
+.admin-table th,
+.admin-table td {
+    border: transparent;
     padding: 12px 15px;
     text-align: left;
 }
@@ -67,7 +68,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
-    background-color: #090912;
+    background-color: #000000;
+    color: white;
 }
 
 .actions-cell .edit-button:hover {
@@ -81,3 +83,47 @@
     color: white;
     border-color: #dc3545;
 }
+
+
+
+@media (max-width: 768px) {
+    .admin-page-container {
+        margin: 20px 0;
+        padding: 15px;
+    }
+
+    .admin-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .admin-table tbody {
+        margin: 20px 0
+    }
+
+    .admin-table tr {
+        display: block;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .admin-table th {
+        display: none;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.8em;
+        text-transform: uppercase;
+        color: #bbdefb;
+    }
+
+
+}
+
