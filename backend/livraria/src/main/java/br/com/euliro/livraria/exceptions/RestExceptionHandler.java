@@ -94,5 +94,19 @@ public class RestExceptionHandler {
 	    return ResponseEntity.status(status).body(err);
 	}
 	
+	@ExceptionHandler(ConflictEmailException.class)
+	public ResponseEntity<StandardError> conflictEmailException(ConflictEmailException ex, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.NOT_FOUND;
+
+		StandardError err = new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Email já cadastrado");
+		err.setMessage(ex.getMessage());
+		err.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(status).body(err);
+	}
+	
 	
 }

@@ -17,6 +17,7 @@ import br.com.euliro.livraria.dto.UserDTO;
 import br.com.euliro.livraria.dto.UserUpdateDTO;
 import br.com.euliro.livraria.entities.User;
 import br.com.euliro.livraria.entities.enums.Role;
+import br.com.euliro.livraria.exceptions.ConflictEmailException;
 import br.com.euliro.livraria.exceptions.ResourceNotFoundException;
 import br.com.euliro.livraria.repositories.UserRepository;
 
@@ -35,7 +36,7 @@ public class UserService {
 	// metodo privado auxiliar que retorna uma entidade
 	private User findEntityById(Long id) {
 		Optional<User> userOptional = repository.findByIdAndActiveTrue(id);
-		return userOptional.orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado! Id: " + id));
+		return userOptional.orElseThrow(() -> new ResourceNotFoundException("Usúario não encontrado! Id: " + id));
 	}
 
 	@Transactional(readOnly = true)
@@ -52,13 +53,16 @@ public class UserService {
 
 	@Transactional
 	public User create(UserCreateDTO dto) {
+		if(repository.findByEmail(dto.getEmail()).isPresent()){
+		   throw new ConflictEmailException(dto.getEmail() + " ja cadastrado");
+		}
 		User entity = new User();
 		entity.setName(dto.getName());
 		entity.setEmail(dto.getEmail());
 		entity.setBirthDate(dto.getBirthDate());
 		entity.addRole(Role.ROLE_CLIENTE);
 		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
-
+		
 		return repository.save(entity);
 	}
 

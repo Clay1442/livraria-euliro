@@ -8,42 +8,44 @@ import axios from 'axios';
 function AdminEditUserPage() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [originalData, setOriginalData] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         birthDate: '',
         roles: []
     });
-
-
+    
+    
     useEffect(() => {
         axios.get(`http://localhost:8080/users/${id}`)
-            .then(response => {
-                setFormData({
-                    name: response.data.name,
-                    email: response.data.email,
-                    birthDate: response.data.birthDate,
-                    roles: response.data.roles
-                })
+        .then(response => {
+            setFormData({
+                name: response.data.name,
+                email: response.data.email,
+                birthDate: response.data.birthDate,
+                roles: response.data.roles
             })
-            .catch(error => console.error("Erro ao buscar usuário:", error));
+            setOriginalData(response.data);
+        })
+        .catch(error => console.error("Erro ao buscar usuário:", error));
     }, [id]);
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
-
+    
     const handleRoleChange = (role) => {
         setFormData(prev => {
             const newRoles = prev.roles.includes(role)
-                ? prev.roles.filter(r => r !== role)
-                : [...prev.roles, role];
+            ? prev.roles.filter(r => r !== role)
+            : [...prev.roles, role];
             return { ...prev, roles: newRoles };
         })
     };
-
-
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.roles.length === 0) {
@@ -51,19 +53,19 @@ function AdminEditUserPage() {
             return false;
         }
         try {
-
+            
             // DTO para atualizar dados básicos
             const updateUserDTO = {
                 name: formData.name,
                 email: formData.email,
                 birthDate: formData.birthDate
             };
-
+            
             // DTO para atualizar os papéis
             const updateRolesDTO = {
                 roles: formData.roles
             };
-
+            
             await Promise.all([
                 axios.put(`http://localhost:8080/users/${id}`, updateUserDTO),
                 axios.put(`http://localhost:8080/users/${id}/roles`, updateRolesDTO)
@@ -82,7 +84,7 @@ function AdminEditUserPage() {
 
     return (
         <div className="edit-user-page">
-            <h2>Editando Usuário: {formData.name}</h2>
+            <h2>Editando Usuário: {originalData.name}</h2>
             <form onSubmit={handleSubmit} className="edit-user-form">
                 <h3>Dados Pessoais</h3>
                 <div className="input-groupEditUser">

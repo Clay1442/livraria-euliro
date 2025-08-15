@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import './RegisterPage.css';
 
@@ -23,11 +24,11 @@ function RegisterPage() {
         try {
             await axios.post('http://localhost:8080/users', userCreatDTO);
 
-            alert("Usuário cadastrado com sucesso!");
+            toast.success("Usuário cadastrado com sucesso!");
             navigate('/login');
         } catch (error) {
-            console.error("Erro ao cadastrar usuário:", error);
-            alert('Erro ao cadastrar usuário. Por favor, tente novamente.');
+            console.error("Erro ao cadastrar usuário: ", error.response?.data || error.message);
+            toast.error('Erro ao cadastrar usuário. Por favor, tente novamente' + (error.response?.data?.message ? `: ${error.response.data.message}` : ''));
         }
     };
 
@@ -36,6 +37,7 @@ function RegisterPage() {
         <div className="register-page">
             <div className="register-container">
                 <h1>Registre-se</h1>
+                
                 <form onSubmit={handleSubmit}>
                     <div className='input-group'>
                         <label htmlFor="name">Nome Completo</label>

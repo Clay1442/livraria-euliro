@@ -71,6 +71,7 @@ public class SecurityConfig {
 
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
 
+
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
 		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
@@ -86,8 +87,7 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify';
 import './AdminEditAuthorPage.css';
 
 function AdminEditAuthorPage() {
@@ -24,11 +25,11 @@ function AdminEditAuthorPage() {
         e.preventDefault(); 
          try {
            await axios.put(`http://localhost:8080/authors/${id}`, formData);
-                    alert('Autor atualizado com sucesso!');
+                    toast.success('Autor atualizado com sucesso!');
                     navigate('/admin/authors');
          } catch (error) {
             console.error("Erro ao atualizar autor:", error);
-            alert("Não foi possível atualizar o autor.");
+            toast.error("Não foi possível atualizar o autor.");
                 }
     }    
 
