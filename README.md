@@ -30,10 +30,7 @@ Gerenciamento de Usuários: Visualizar a lista de todos os usuários cadastrados
 ## Layout mobile
 <img width="240" height="970" alt="image" src="https://github.com/user-attachments/assets/df6e10c6-a4cb-4ad5-b1cf-a5d963f99dbd" />
 <img width="240" height="970" alt="image" src="https://github.com/user-attachments/assets/56b59906-8674-4234-ac96-65b9d94f9687" />
-<img width="240" height="970" alt="image" src="https://github.com/user-attachments/assets/49f81082-af0f-4476-854c-44476658d619" />
-<img width="240" height="970" alt="image" src="https://github.com/user-attachments/assets/c28641f3-ba33-439d-9ced-5ad915c69d0b" />
-<img width="240" height="970" alt="image" src="https://github.com/user-attachments/assets/abfb3ac2-68b3-4ea7-bc7a-f7ca74ae273f" />
-<img width="240" height="970" alt="image" src="https://github.com/user-attachments/assets/c66996f1-5ece-42fc-855f-9757ed67c971" />
+
 
 ## Layout web
 <img width="800" height="570" alt="image" src="https://github.com/user-attachments/assets/3c4bef8f-5ca9-42a3-a307-6867a50bb626" />
